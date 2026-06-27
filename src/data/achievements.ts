@@ -1,0 +1,12 @@
+// src/data/achievements.ts
+export const achievements = [
+  { icon: 'fas fa-star',       title: 'CodeChef 3 Star',          description: '3-Star rated on CodeChef. Solved 2,000+ algorithmic and data structure problems across competitive programming platforms.',        link: null },
+  { icon: 'fab fa-aws',        title: 'AWS × Hack2skill Finalist',        description: 'Shortlisted nationwide — Top 100 of 1 Lakh participants — for Gramin Sahayak. $100 AWS credits awarded for prototype phase.',           link: null },
+  { icon: 'fas fa-landmark',   title: 'MoSPI, Govt. of India',            description: 'Selected under Group A from a large national applicant pool for the Ministry of Statistics & Programme Implementation Statistical Internship.', link: null },
+  { icon: 'fas fa-medal',      title: 'Academic Excellence',              description: '9.32 CGPA (Sem I–VI) at SASI Institute. 98.2% in Intermediate (<strong>EAMCET Rank 3292</strong>). 100% in SSC. Consistent top performer.',              link: null },
+  { icon: 'fas fa-robot',      title: 'Daily GitHub Streak Agent',        description: 'Developed an automated serverless CI/CD pipeline leveraging GitHub Actions and Python to maintain a consistent 7-commit daily streak with unique rotating quotes.', link: null },
+  { icon: 'fas fa-trophy',     title: 'PRAYATNA 2.0 National Hackathon',  description: 'Competed at national level; built working prototype of StockEase under a strict time constraint with a cross-functional team.',           link: 'https://drive.google.com/file/d/1QPGMXciPK-iUjcasOpO7DzzuMG0lCy-D/view' },
+  { icon: 'fas fa-lightbulb',  title: 'TECH SPARK\'25 Quiz Winner',       description: 'Awarded for securing a top position in the TECH SPARK\'25 technical quiz, demonstrating strong foundational CS knowledge.',              link: 'https://drive.google.com/file/d/1kngzVDppM-KkLbfaJBxhRsEDKFPk5kuV/view' },
+  { icon: 'fas fa-user-tie',   title: 'Full Stack Dev Interview Cert.',    description: 'Certified in preparing for and excelling in full-stack developer technical interviews, covering system design and DSA.',                  link: 'https://drive.google.com/file/d/1tuEFJA9A7NBlSI37WqF-I7pIRCdcCHUy/view' },
+  { icon: 'fas fa-code',       title: 'Competitive Coding for Placement', description: 'Completed intensive training in data structures and algorithms specifically designed for placement-level competitive programming.',          link: 'https://drive.google.com/file/d/1xN-XymmCgdjKEca1iHIvkrel0orglaat/view' },
+];
