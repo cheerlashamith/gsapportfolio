@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { ChevronDown } from "lucide-react";
 import resumePdf from '../CHEERLA_SHAMITH_Resume.pdf';
+import heroImg from '../assets/hero.jpg';
 
 // BlurText animation component
 interface BlurTextProps {
@@ -280,7 +281,7 @@ export default function HeroSection({ preloaderDone }: { preloaderDone: boolean 
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-[#5227c7]/20 to-[#ff6d34]/20 z-10 pointer-events-none mix-blend-overlay group-hover:opacity-0 transition-opacity duration-500"></div>
               <img
-                src="/src/assets/hero.jpg"
+                src={heroImg}
                 alt="Cheerla Shamith"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 style={{ objectPosition: 'center 20%' }}
