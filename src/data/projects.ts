@@ -13,8 +13,8 @@ export interface Project {
   name: string;
   description: string;
   tech: string[];
-  liveUrl: string | null;
-  codeUrl: string | null;
+  liveUrl?: string | null;
+  codeUrl?: string | null;
   badge: string | null;
   color: string; // dominant accent for this card
   image: string; // single real screenshot
