@@ -16,7 +16,7 @@ const NAV_LINKS = [
   { id: 'about',          label: 'About',        icon: <IoPersonOutline />,      gradientFrom: '#56CCF2', gradientTo: '#2F80ED' },
   { id: 'skills',         label: 'Skills',       icon: <IoCodeSlashOutline />,   gradientFrom: '#FF9966', gradientTo: '#FF5E62' },
   { id: 'projects',       label: 'Projects',     icon: <IoAppsOutline />,        gradientFrom: '#80FF72', gradientTo: '#7EE8FA' },
-  { id: 'experience',     label: 'Journey',      icon: <IoMapOutline />,         gradientFrom: '#ffa9c6', gradientTo: '#f434e2' },
+  { id: 'timeline',       label: 'Journey',      icon: <IoMapOutline />,         gradientFrom: '#ffa9c6', gradientTo: '#f434e2' },
   { id: 'hackathons',     label: 'Hackathons',   icon: <IoRocketOutline />,      gradientFrom: '#f6d365', gradientTo: '#fda085' },
   { id: 'certifications', label: 'Certs',        icon: <IoRibbonOutline />,      gradientFrom: '#4facfe', gradientTo: '#00f2fe' },
   { id: 'contact',        label: 'Contact',      icon: <IoMailOutline />,        gradientFrom: '#11998e', gradientTo: '#38ef7d' },
