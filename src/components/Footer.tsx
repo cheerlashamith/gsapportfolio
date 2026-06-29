@@ -1,7 +1,7 @@
 // src/components/Footer.tsx
 import { lenis } from '../main';
 
-const NAV_LINKS = ['Home','About','Skills','Projects','Education','Hackathons','Certifications','Achievements','Contact'];
+const NAV_LINKS = ['Home','About','Skills','Projects','Journey','Hackathons','Certifications','Achievements','Contact'];
 const NAV_IDS   = ['hero','about','skills','projects','timeline','hackathons','certifications','achievements','contact'];
 
 const SOCIALS = [
