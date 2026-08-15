@@ -15,10 +15,12 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       onComplete: () => {
         gsap.to('.preloader-wrap', {
           y: '-100%',
-          duration: 1.2,
+          duration: 0.9,
           ease: 'power4.inOut',
           onComplete: () => {
             document.body.style.overflow = '';
+            const wrap = document.querySelector('.preloader-wrap') as HTMLElement;
+            if (wrap) wrap.style.display = 'none';
             onComplete();
           }
         });
@@ -29,17 +31,17 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
     tl.to('.preloader-char', {
       color: '#ffffff',
       textShadow: '0 0 20px rgba(255,255,255,0.8)',
-      stagger: 0.15,
-      duration: 0.1,
+      stagger: 0.12,
+      duration: 0.08,
       ease: 'none'
     })
     // Hold it lit up for a tiny bit
-    .to({}, { duration: 0.3 })
+    .to({}, { duration: 0.2 })
     // Fade out text
     .to('.preloader-char', {
       opacity: 0,
-      duration: 0.5,
-      stagger: 0.05,
+      duration: 0.4,
+      stagger: 0.04,
       ease: 'power2.inOut'
     });
 
@@ -52,6 +54,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       position: 'fixed', inset: 0, zIndex: 9999,
       background: '#000000', display: 'flex',
       alignItems: 'center', justifyContent: 'center',
+      willChange: 'transform',
     }}>
       <div ref={textRef} style={{
         fontFamily: "'Libre Baskerville', serif", fontWeight: 700,

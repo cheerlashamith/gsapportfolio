@@ -31,14 +31,14 @@ function StorytellingDesktop() {
           },
         });
 
-        // Add animations - Adjusted durations for a buttery storytelling feel
-        tl.fromTo(`${scene} .story-number`, { opacity: 0, y: 80, scale: 0.7 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' }, 0)
-          .fromTo(`${scene} .story-category`, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' }, 0.2)
-          .fromTo(`${scene} .story-name`, { opacity: 0, y: 40, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' }, 0.3)
-          .fromTo(`${scene} .story-image`, { clipPath: 'inset(50% 50% 50% 50%)', opacity: 0 }, { clipPath: 'inset(0% 0% 0% 0%)', opacity: 1, duration: 1.0, ease: 'power4.out' }, 0.4)
-          .fromTo(`${scene} .story-desc`, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 0.6)
-          .fromTo(`${scene} .story-tech-tag`, { opacity: 0, y: 15, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, stagger: 0.05, duration: 0.5, ease: 'back.out(1.7)' }, 0.7)
-          .fromTo(`${scene} .story-cta`, { opacity: 0, y: 20 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.5, ease: 'power2.out' }, 0.9);
+        // Hardware-accelerated smooth animations
+        tl.fromTo(`${scene} .story-number`, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0)
+          .fromTo(`${scene} .story-category`, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' }, 0.1)
+          .fromTo(`${scene} .story-name`, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.15)
+          .fromTo(`${scene} .story-image`, { opacity: 0, y: 30, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' }, 0.2)
+          .fromTo(`${scene} .story-desc`, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.3)
+          .fromTo(`${scene} .story-tech-tag`, { opacity: 0, y: 10 }, { opacity: 1, y: 0, stagger: 0.03, duration: 0.4, ease: 'power2.out' }, 0.4)
+          .fromTo(`${scene} .story-cta`, { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.05, duration: 0.4, ease: 'power2.out' }, 0.5);
       });
     }, containerRef);
 
@@ -167,7 +167,7 @@ function StorytellingDesktop() {
                 <div className="story-image" style={{
                   borderRadius: 20, overflow: 'hidden',
                   boxShadow: `0 30px 80px ${project.color}25, 0 0 0 1px rgba(255,255,255,0.06)`,
-                  opacity: 0, clipPath: 'inset(50% 50% 50% 50%)',
+                  opacity: 0, willChange: 'transform, opacity',
                 }}>
                   <img
                     src={project.image}

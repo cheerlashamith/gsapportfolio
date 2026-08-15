@@ -26,8 +26,8 @@ export default function AchievementsSection() {
                 padding: '2px', // space for border
                 boxShadow: '0 2px 12px rgba(0,0,0,0.04)'
               }}>
-                {/* Rotating Glowing Gradient Border (Only visible on hover) */}
-                <div className="absolute inset-[-100%] z-0 animate-[spin_4s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                {/* Rotating Glowing Gradient Border (Only active on hover) */}
+                <div className="absolute inset-[-100%] z-0 [animation-play-state:paused] group-hover:[animation-play-state:running] animate-[spin_4s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                      style={{ background: 'conic-gradient(from 0deg, transparent 70%, #5227c7 85%, #ff6d34 100%)' }} />
                 
                 {/* Inner Content Container */}

@@ -67,17 +67,17 @@ export default function AboutSection() {
 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Image Column */}
-          <motion.div style={{ y: imgY }}>
+          <motion.div style={{ y: imgY, willChange: 'transform' }}>
             <motion.div
               initial={{ opacity: 0, x: -60, rotateY: -15 }}
               whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 1, ease: 'easeOut' }}
-              style={{ perspective: 1200, margin: '0 auto', display: 'flex', justifyContent: 'center', position: 'relative', height: '100%', minHeight: 450 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              style={{ perspective: 1200, margin: '0 auto', display: 'flex', justifyContent: 'center', position: 'relative', height: '100%', minHeight: 450, willChange: 'transform, opacity' }}
             >
               <div style={{ position: 'relative', maxWidth: 400, width: '100%', marginTop: 20 }}>
                 {/* Clean Backing Stack 1 */}
-                <img src={aboutImg} alt="" style={{
+                <img src={aboutImg} alt="" loading="lazy" decoding="async" style={{
                   position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover',
                   borderRadius: 24, transform: 'rotate(-4deg)', opacity: 0.3, filter: 'grayscale(100%)', zIndex: 0
                 }} />
@@ -106,7 +106,7 @@ export default function AboutSection() {
           </motion.div>
 
           {/* Text Column */}
-          <motion.div style={{ paddingTop: 'clamp(20px, 4vw, 60px)', y: textY }}>
+          <motion.div style={{ paddingTop: 'clamp(20px, 4vw, 60px)', y: textY, willChange: 'transform' }}>
             <div>
               <motion.h3
                 initial={{ opacity: 0, y: 30 }}

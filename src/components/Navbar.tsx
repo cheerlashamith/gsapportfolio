@@ -64,7 +64,7 @@ export default function Navbar({ preloaderDone }: { preloaderDone: boolean }) {
     setTimeout(() => {
       const el = document.getElementById(id);
       if (el) {
-        if (lenis) lenis.scrollTo(el);
+        if (lenis) lenis.scrollTo(el, { offset: -20, duration: 1.1 });
         else el.scrollIntoView({ behavior: 'smooth' });
       }
     }, 50);

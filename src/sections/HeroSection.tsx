@@ -50,10 +50,10 @@ const BlurText: React.FC<BlurTextProps> = ({
           key={i}
           style={{
             display: "inline-block",
-            filter: inView ? "blur(0px)" : "blur(10px)",
             opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0)" : `translateY(${direction === "top" ? "-20px" : "20px"})`,
-            transition: `all 0.5s ease-out ${i * delay}ms`,
+            transform: inView ? "translate3d(0, 0, 0)" : `translate3d(0, ${direction === "top" ? "-16px" : "16px"}, 0)`,
+            transition: `opacity 0.45s ease-out ${i * delay}ms, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) ${i * delay}ms`,
+            willChange: 'transform, opacity'
           }}
         >
           {segment === " " ? "\u00A0" : segment}

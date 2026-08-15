@@ -49,8 +49,8 @@ function SkillRow({
 }) {
   const rowRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
+  const floatingRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   const handleEnter = () => {
     setHovered(true);
@@ -63,9 +63,11 @@ function SkillRow({
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!rowRef.current) return;
+    if (!rowRef.current || !floatingRef.current) return;
     const rect = rowRef.current.getBoundingClientRect();
-    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    floatingRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
   };
 
   const hoverColor = index % 2 === 0 ? '#5227c7' : '#ff6d34';
@@ -78,25 +80,30 @@ function SkillRow({
       onMouseLeave={handleLeave}
       onMouseMove={handleMouseMove}
     >
-      {/* Floating Images (Follow Cursor) */}
-      <div style={{
-        position: 'absolute',
-        left: mousePos.x,
-        top: mousePos.y,
-        transform: 'translate(-50%, -50%)',
-        pointerEvents: 'none',
-        opacity: hovered ? 1 : 0,
-        transition: 'opacity 0.4s ease',
-        zIndex: 20
-      }} className="hidden md:block">
-        <img src={heroImg} alt="" style={{
+      {/* Floating Images (Follow Cursor without React re-renders) */}
+      <div
+        ref={floatingRef}
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          transform: 'translate3d(0, 0, 0) translate(-50%, -50%)',
+          pointerEvents: 'none',
+          opacity: hovered ? 1 : 0,
+          transition: 'opacity 0.4s ease',
+          zIndex: 20,
+          willChange: 'transform, opacity'
+        }}
+        className="hidden md:block"
+      >
+        <img src={heroImg} alt="" loading="lazy" decoding="async" style={{
           width: 140, height: 180, objectFit: 'cover', borderRadius: 12,
           position: 'absolute', top: -90, left: -90,
           transform: hovered ? 'translateY(0px) rotate(-12deg) scale(1)' : 'translateY(20px) rotate(-20deg) scale(0.8)',
           transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
           boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
         }} />
-        <img src={aboutImg} alt="" style={{
+        <img src={aboutImg} alt="" loading="lazy" decoding="async" style={{
           width: 160, height: 200, objectFit: 'cover', borderRadius: 12,
           position: 'absolute', top: -60, left: 10,
           transform: hovered ? 'translateY(-10px) rotate(8deg) scale(1)' : 'translateY(20px) rotate(20deg) scale(0.8)',

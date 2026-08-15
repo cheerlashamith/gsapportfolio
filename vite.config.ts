@@ -1,6 +1,3 @@
-// vite.config.ts — Add PWA plugin
-// First: npm install -D vite-plugin-pwa
-
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -11,13 +8,13 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'src/assets/hero.jpg'],
+      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt'],
       manifest: {
         name: 'Cheerla Shamith — Portfolio',
         short_name: 'CS Portfolio',
         description: 'Full-Stack Developer & AI Enthusiast — Cheerla Shamith',
-        theme_color: '#4361ee',
-        background_color: '#060610',
+        theme_color: '#5227c7',
+        background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
         icons: [
@@ -40,7 +37,7 @@ export default defineConfig({
         ],
       },
       devOptions: {
-        enabled: false, // ← disable SW in dev so Vite's HMR works properly
+        enabled: false,
       },
       workbox: {
         maximumFileSizeToCacheInBytes: 8000000,
@@ -66,5 +63,17 @@ export default defineConfig({
   ],
   resolve: {
     alias: { '@': path.resolve(__dirname, './src') },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-animation': ['framer-motion', 'gsap', '@studio-freight/lenis'],
+          'vendor-icons': ['react-icons', 'lucide-react'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
   },
 });
