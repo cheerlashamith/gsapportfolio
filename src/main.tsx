@@ -9,25 +9,27 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Lenis smooth scroll — tuned for responsive, butter-smooth 60fps scrolling
+// Lenis smooth scroll — configured for optimal 60fps responsiveness
 const lenis = new Lenis({
-  duration:        1.0,
+  duration:        1.2,
   easing:          (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smoothWheel:     true,
-  smoothTouch:     false, // prevent mobile scroll lag / fighting
+  smoothTouch:     false, // native momentum scrolling on mobile prevents stutter
   touchMultiplier: 1.5,
   wheelMultiplier: 1.0,
+  infinite:        false,
 } as any);
 
-// Update ScrollTrigger on scroll
+// 1. Synchronize Lenis scroll events with GSAP ScrollTrigger
 lenis.on('scroll', ScrollTrigger.update);
 
-// Dedicated standard high-precision RAF loop
-function raf(time: number) {
-  lenis.raf(time);
-  requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
+// 2. Hook Lenis into GSAP ticker so both animate on the exact same frame
+gsap.ticker.add((time: number) => {
+  lenis.raf(time * 1000);
+});
+
+// 3. Disable lagSmoothing so GSAP animations track the Lenis frame in real-time
+gsap.ticker.lagSmoothing(0);
 
 // Export lenis so sections can use lenis.scrollTo()
 export { lenis };

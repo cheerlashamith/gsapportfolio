@@ -19,26 +19,25 @@ function StorytellingDesktop() {
       projects.forEach((_, i) => {
         const scene = `.project-scene-${i}`;
 
-        // Animate elements within the scene as it scrolls into view
+        // Animate elements as they enter view smoothly
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: scene,
-            start: 'top 80%',
-            end: 'bottom 20%',
-            toggleActions: 'play reverse play reverse',
+            start: 'top 75%',
+            toggleActions: 'play none none none',
             onEnter: () => setActiveIndex(i),
             onEnterBack: () => setActiveIndex(i),
           },
         });
 
         // Hardware-accelerated smooth animations
-        tl.fromTo(`${scene} .story-number`, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0)
+        tl.fromTo(`${scene} .story-number`, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 0)
           .fromTo(`${scene} .story-category`, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' }, 0.1)
-          .fromTo(`${scene} .story-name`, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.15)
-          .fromTo(`${scene} .story-image`, { opacity: 0, y: 30, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' }, 0.2)
-          .fromTo(`${scene} .story-desc`, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.3)
-          .fromTo(`${scene} .story-tech-tag`, { opacity: 0, y: 10 }, { opacity: 1, y: 0, stagger: 0.03, duration: 0.4, ease: 'power2.out' }, 0.4)
-          .fromTo(`${scene} .story-cta`, { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.05, duration: 0.4, ease: 'power2.out' }, 0.5);
+          .fromTo(`${scene} .story-name`, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 0.15)
+          .fromTo(`${scene} .story-image`, { opacity: 0, y: 25, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'power2.out' }, 0.2)
+          .fromTo(`${scene} .story-desc`, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.3)
+          .fromTo(`${scene} .story-tech-tag`, { opacity: 0, y: 10 }, { opacity: 1, y: 0, stagger: 0.03, duration: 0.4, ease: 'power2.out' }, 0.35)
+          .fromTo(`${scene} .story-cta`, { opacity: 0, y: 10 }, { opacity: 1, y: 0, stagger: 0.05, duration: 0.4, ease: 'power2.out' }, 0.4);
       });
     }, containerRef);
 
@@ -315,17 +314,16 @@ export default function ProjectsSection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from('.projects-header', {
-        opacity: 0, y: 40, duration: 0.8, ease: 'power3.out',
+        opacity: 0, y: 30, duration: 0.7, ease: 'power2.out',
         scrollTrigger: { 
           trigger: sectionRef.current, 
-          start: 'top 85%', 
-          end: 'bottom 15%', 
-          toggleActions: 'play reverse play reverse' 
+          start: 'top 80%', 
+          toggleActions: 'play none none none' 
         },
       });
       gsap.to('.projects-watermark', {
-        y: -140, ease: 'none',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', scrub: 2 },
+        y: -100, ease: 'none',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', scrub: 0.5 },
       });
     }, sectionRef);
     return () => ctx.revert();

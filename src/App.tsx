@@ -1,5 +1,6 @@
 // src/App.tsx
-import React, { useState, Suspense, lazy } from 'react';
+import React, { useState } from 'react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Cursor from './components/Cursor';
 import Preloader from './components/Preloader';
 import Navbar from './components/Navbar';
@@ -7,16 +8,14 @@ import ScrollProgressBar from './components/ScrollProgressBar';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 import HeroSection from './sections/HeroSection';
-
-// Lazy-load below-the-fold sections for instant initial page render & non-blocking execution
-const AboutSection = lazy(() => import('./sections/AboutSection'));
-const SkillsSection = lazy(() => import('./sections/SkillsSection'));
-const ProjectsSection = lazy(() => import('./sections/ProjectsSection'));
-const TimelineSection = lazy(() => import('./sections/TimelineSection'));
-const HackathonsSection = lazy(() => import('./sections/HackathonsSection'));
-const CertificationsSection = lazy(() => import('./sections/CertificationsSection'));
-const AchievementsSection = lazy(() => import('./sections/AchievementsSection'));
-const ContactSection = lazy(() => import('./sections/ContactSection'));
+import AboutSection from './sections/AboutSection';
+import SkillsSection from './sections/SkillsSection';
+import ProjectsSection from './sections/ProjectsSection';
+import TimelineSection from './sections/TimelineSection';
+import HackathonsSection from './sections/HackathonsSection';
+import CertificationsSection from './sections/CertificationsSection';
+import AchievementsSection from './sections/AchievementsSection';
+import ContactSection from './sections/ContactSection';
 
 // Section divider
 const SectionDivider = () => <div className="section-divider" />;
@@ -31,6 +30,14 @@ export default function App() {
     }
     window.scrollTo(0, 0);
   }, []);
+
+  const handlePreloaderComplete = () => {
+    setPreloaderDone(true);
+    // Recalibrate GSAP ScrollTrigger after preloader lifts
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 150);
+  };
 
   return (
     <>
@@ -50,7 +57,7 @@ export default function App() {
 
       {/* Global UI */}
       <Cursor />
-      <Preloader onComplete={() => setPreloaderDone(true)} />
+      <Preloader onComplete={handlePreloaderComplete} />
       <Navbar preloaderDone={preloaderDone} />
       <ScrollProgressBar />
 
@@ -60,47 +67,45 @@ export default function App() {
           <HeroSection preloaderDone={preloaderDone} />
         </ErrorBoundary>
 
-        <Suspense fallback={<div style={{ minHeight: '50vh' }} />}>
-          <ErrorBoundary>
-            <AboutSection />
-          </ErrorBoundary>
+        <ErrorBoundary>
+          <AboutSection />
+        </ErrorBoundary>
 
-          <SectionDivider />
+        <SectionDivider />
 
-          <ErrorBoundary>
-            <SkillsSection />
-          </ErrorBoundary>
+        <ErrorBoundary>
+          <SkillsSection />
+        </ErrorBoundary>
 
-          <SectionDivider />
+        <SectionDivider />
 
-          <ErrorBoundary>
-            <ProjectsSection />
-          </ErrorBoundary>
+        <ErrorBoundary>
+          <ProjectsSection />
+        </ErrorBoundary>
 
-          <ErrorBoundary>
-            <TimelineSection />
-          </ErrorBoundary>
+        <ErrorBoundary>
+          <TimelineSection />
+        </ErrorBoundary>
 
-          <SectionDivider />
+        <SectionDivider />
 
-          <ErrorBoundary>
-            <HackathonsSection />
-          </ErrorBoundary>
+        <ErrorBoundary>
+          <HackathonsSection />
+        </ErrorBoundary>
 
-          <ErrorBoundary>
-            <CertificationsSection />
-          </ErrorBoundary>
+        <ErrorBoundary>
+          <CertificationsSection />
+        </ErrorBoundary>
 
-          <SectionDivider />
+        <SectionDivider />
 
-          <ErrorBoundary>
-            <AchievementsSection />
-          </ErrorBoundary>
+        <ErrorBoundary>
+          <AchievementsSection />
+        </ErrorBoundary>
 
-          <ErrorBoundary>
-            <ContactSection />
-          </ErrorBoundary>
-        </Suspense>
+        <ErrorBoundary>
+          <ContactSection />
+        </ErrorBoundary>
 
         {/* Minimal Footer below Contact Section */}
         <footer style={{

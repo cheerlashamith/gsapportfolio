@@ -13,15 +13,15 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
 
     const tl = gsap.timeline({
       onComplete: () => {
+        document.body.style.overflow = '';
+        onComplete();
         gsap.to('.preloader-wrap', {
           y: '-100%',
-          duration: 0.9,
-          ease: 'power4.inOut',
+          duration: 0.8,
+          ease: 'power3.inOut',
           onComplete: () => {
-            document.body.style.overflow = '';
             const wrap = document.querySelector('.preloader-wrap') as HTMLElement;
             if (wrap) wrap.style.display = 'none';
-            onComplete();
           }
         });
       }
