@@ -1,9 +1,7 @@
-// src/sections/AboutSection.tsx
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { useCounter } from '../hooks/useCounter';
-import aboutImg from '../assets/about.jpg';
-import heroImg from '../assets/hero.jpg';
+import aboutImg from '../assets/about.webp';
 
 const STATS = [
   { value: 9, suffix: '.32', label: 'CGPA', icon: 'fas fa-graduation-cap' },

@@ -1,11 +1,11 @@
 // src/data/certifications.ts
-import oracleLogo from '../assets/certs/oracle.png';
-import googleLogo from '../assets/certs/google.jpg';
-import awsLogo from '../assets/certs/aws.png';
-import linkedinLogo from '../assets/certs/linkedin.png';
-import pythonLogo from '../assets/certs/python.png';
-import infosysLogo from '../assets/certs/infosys.png';
-import mongodbLogo from '../assets/certs/mongodb.png';
+import oracleLogo from '../assets/certs/oracle.webp';
+import googleLogo from '../assets/certs/google.webp';
+import awsLogo from '../assets/certs/aws.webp';
+import linkedinLogo from '../assets/certs/linkedin.webp';
+import pythonLogo from '../assets/certs/python.webp';
+import infosysLogo from '../assets/certs/infosys.webp';
+import mongodbLogo from '../assets/certs/mongodb.webp';
 
 export const certifications = [
   { name: 'Generative AI Professional',    issuer: 'Oracle',               logo: oracleLogo,    link: 'https://drive.google.com/file/d/1NMPukqoVycnJCC26BxGo5Tsd-7OejT_W/view' },

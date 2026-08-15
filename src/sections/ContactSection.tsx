@@ -1,7 +1,7 @@
 // src/sections/ContactSection.tsx
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import heroImg from '../assets/hero.jpg';
+import heroImg from '../assets/hero.webp';
 
 const CHARS = '!<>-_\\/[]{}—=+*^?#_';
 function ScrambleHeading({ text }: { text: string }) {

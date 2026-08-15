@@ -2,8 +2,8 @@ import { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { skillCategories } from '../data/skills';
-import aboutImg from '../assets/about.jpg';
-import heroImg from '../assets/hero.jpg';
+import aboutImg from '../assets/about.webp';
+import heroImg from '../assets/hero.webp';
 
 function SkillPill({ name, icon, color }: { name: string; icon: string; color?: string }) {
   return (

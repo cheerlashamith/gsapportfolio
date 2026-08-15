@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Lenis smooth scroll — tuned for responsive, butter-smooth 60fps scrolling
 const lenis = new Lenis({
-  duration:        1.1,
+  duration:        1.0,
   easing:          (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smoothWheel:     true,
   smoothTouch:     false, // prevent mobile scroll lag / fighting
@@ -19,15 +19,15 @@ const lenis = new Lenis({
   wheelMultiplier: 1.0,
 } as any);
 
-// Wire Lenis into GSAP ticker
-function rafLoop(time: number) {
-  lenis.raf(time * 1000);
-}
-gsap.ticker.add(rafLoop);
-gsap.ticker.lagSmoothing(500, 33); // Keep lagSmoothing enabled to avoid large teleport jumps during frame drops
-
-// Sync ScrollTrigger with Lenis
+// Update ScrollTrigger on scroll
 lenis.on('scroll', ScrollTrigger.update);
+
+// Dedicated standard high-precision RAF loop
+function raf(time: number) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
 
 // Export lenis so sections can use lenis.scrollTo()
 export { lenis };

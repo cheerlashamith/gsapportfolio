@@ -1,9 +1,9 @@
 // src/data/hackathons.ts
-import solutionLogo from '../assets/hackathons/solution.jpg';
-import bharathLogo from '../assets/hackathons/bharath.jpg';
-import amdLogo from '../assets/hackathons/amd.jpg';
-import googleLogo from '../assets/hackathons/google.jpg';
-import acmLogo from '../assets/hackathons/acm.jpg';
+import solutionLogo from '../assets/hackathons/solution.webp';
+import bharathLogo from '../assets/hackathons/bharath.webp';
+import amdLogo from '../assets/hackathons/amd.webp';
+import googleLogo from '../assets/hackathons/google.webp';
+import acmLogo from '../assets/hackathons/acm.webp';
 
 export const hackathons = [
   {

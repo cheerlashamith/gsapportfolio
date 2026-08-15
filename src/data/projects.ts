@@ -1,10 +1,9 @@
-// src/data/projects.ts
-import graminImg from '../assets/projects/gramin-card.png';
-import smartsupportImg from '../assets/projects/smartsupport-card.png';
-import windowsImg from '../assets/projects/windowsnew.png';
-import stockeaseImg from '../assets/projects/stockeasenew.png';
-import mindmitraImg from '../assets/projects/mindmitranew.png';
-import codearenaImg from '../assets/projects/codearenanew.png';
+import graminImg from '../assets/projects/gramin-card.webp';
+import smartsupportImg from '../assets/projects/smartsupport-card.webp';
+import windowsImg from '../assets/projects/windowsnew.webp';
+import stockeaseImg from '../assets/projects/stockeasenew.webp';
+import mindmitraImg from '../assets/projects/mindmitranew.webp';
+import codearenaImg from '../assets/projects/codearenanew.webp';
 
 export interface Project {
   id: string;

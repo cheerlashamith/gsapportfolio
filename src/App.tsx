@@ -1,21 +1,22 @@
 // src/App.tsx
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import Cursor from './components/Cursor';
 import Preloader from './components/Preloader';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 import ScrollProgressBar from './components/ScrollProgressBar';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 import HeroSection from './sections/HeroSection';
-import AboutSection from './sections/AboutSection';
-import SkillsSection from './sections/SkillsSection';
-import ProjectsSection from './sections/ProjectsSection';
-import TimelineSection from './sections/TimelineSection';
-import HackathonsSection from './sections/HackathonsSection';
-import CertificationsSection from './sections/CertificationsSection';
-import AchievementsSection from './sections/AchievementsSection';
-import ContactSection from './sections/ContactSection';
+
+// Lazy-load below-the-fold sections for instant initial page render & non-blocking execution
+const AboutSection = lazy(() => import('./sections/AboutSection'));
+const SkillsSection = lazy(() => import('./sections/SkillsSection'));
+const ProjectsSection = lazy(() => import('./sections/ProjectsSection'));
+const TimelineSection = lazy(() => import('./sections/TimelineSection'));
+const HackathonsSection = lazy(() => import('./sections/HackathonsSection'));
+const CertificationsSection = lazy(() => import('./sections/CertificationsSection'));
+const AchievementsSection = lazy(() => import('./sections/AchievementsSection'));
+const ContactSection = lazy(() => import('./sections/ContactSection'));
 
 // Section divider
 const SectionDivider = () => <div className="section-divider" />;
@@ -59,50 +60,52 @@ export default function App() {
           <HeroSection preloaderDone={preloaderDone} />
         </ErrorBoundary>
 
-        <ErrorBoundary>
-          <AboutSection />
-        </ErrorBoundary>
+        <Suspense fallback={<div style={{ minHeight: '50vh' }} />}>
+          <ErrorBoundary>
+            <AboutSection />
+          </ErrorBoundary>
 
-        <SectionDivider />
+          <SectionDivider />
 
-        <ErrorBoundary>
-          <SkillsSection />
-        </ErrorBoundary>
+          <ErrorBoundary>
+            <SkillsSection />
+          </ErrorBoundary>
 
-        <SectionDivider />
+          <SectionDivider />
 
-        <ErrorBoundary>
-          <ProjectsSection />
-        </ErrorBoundary>
+          <ErrorBoundary>
+            <ProjectsSection />
+          </ErrorBoundary>
 
-        <ErrorBoundary>
-          <TimelineSection />
-        </ErrorBoundary>
+          <ErrorBoundary>
+            <TimelineSection />
+          </ErrorBoundary>
 
-        <SectionDivider />
+          <SectionDivider />
 
-        <ErrorBoundary>
-          <HackathonsSection />
-        </ErrorBoundary>
+          <ErrorBoundary>
+            <HackathonsSection />
+          </ErrorBoundary>
 
-        <ErrorBoundary>
-          <CertificationsSection />
-        </ErrorBoundary>
+          <ErrorBoundary>
+            <CertificationsSection />
+          </ErrorBoundary>
 
-        <SectionDivider />
+          <SectionDivider />
 
-        <ErrorBoundary>
-          <AchievementsSection />
-        </ErrorBoundary>
+          <ErrorBoundary>
+            <AchievementsSection />
+          </ErrorBoundary>
 
-        <ErrorBoundary>
-          <ContactSection />
-        </ErrorBoundary>
+          <ErrorBoundary>
+            <ContactSection />
+          </ErrorBoundary>
+        </Suspense>
 
         {/* Minimal Footer below Contact Section */}
         <footer style={{
           textAlign: 'center',
-          padding: '40px 20px 120px 20px', // 120px bottom padding ensures it clears the fixed dock menu
+          padding: '40px 20px 120px 20px',
           background: '#fff',
           fontFamily: "'Space Grotesk', sans-serif",
           fontWeight: 500,

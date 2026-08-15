@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { ChevronDown } from "lucide-react";
 import resumePdf from '../CHEERLA_SHAMITH_Resume.pdf';
-import heroImg from '../assets/hero.jpg';
+import heroImg from '../assets/hero.webp';
 
 // BlurText animation component
 interface BlurTextProps {
@@ -133,8 +133,7 @@ export default function HeroSection({ preloaderDone }: { preloaderDone: boolean 
       className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-20"
       style={{ backgroundColor: "#ffffff", color: "#1a1a2e" }}
     >
-      {preloaderDone && (
-        <div className="container mx-auto px-6 h-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 relative z-10 max-w-6xl">
+      <div className="container mx-auto px-6 h-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 relative z-10 max-w-6xl">
           
           {/* Left Column: Text */}
           <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left mt-10 lg:mt-0">
@@ -290,7 +289,6 @@ export default function HeroSection({ preloaderDone }: { preloaderDone: boolean 
           </div>
 
         </div>
-      )}
 
       {/* Scroll Indicator */}
       <button
