@@ -31,13 +31,13 @@ export default function App() {
     window.scrollTo(0, 0);
   }, []);
 
-  const handlePreloaderComplete = () => {
+  const handlePreloaderComplete = React.useCallback(() => {
     setPreloaderDone(true);
     // Recalibrate GSAP ScrollTrigger after preloader lifts
     setTimeout(() => {
       ScrollTrigger.refresh();
     }, 150);
-  };
+  }, []);
 
   return (
     <>

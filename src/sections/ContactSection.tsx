@@ -184,6 +184,9 @@ export default function ContactSection() {
               <form onSubmit={handleSubmit} noValidate className="relative z-10">
                 <div style={{ marginBottom: 20 }}>
                   <input
+                    id="contact-name"
+                    name="name"
+                    autoComplete="name"
                     type="text" placeholder="Your name *" value={name}
                     onChange={e => { setName(e.target.value); setErrors(er => ({ ...er, name: '' })); }}
                     style={{ ...fieldBase, ...(errors.name ? { borderColor: '#ef4444' } : {}) }}
@@ -195,6 +198,9 @@ export default function ContactSection() {
 
                 <div style={{ marginBottom: 20 }}>
                   <input
+                    id="contact-email"
+                    name="email"
+                    autoComplete="email"
                     type="email" placeholder="Your email *" value={email}
                     onChange={e => { setEmail(e.target.value); setErrors(er => ({ ...er, email: '' })); }}
                     style={{ ...fieldBase, ...(errors.email ? { borderColor: '#ef4444' } : {}) }}
@@ -206,6 +212,9 @@ export default function ContactSection() {
 
                 <div style={{ marginBottom: 32 }}>
                   <textarea
+                    id="contact-message"
+                    name="message"
+                    autoComplete="off"
                     placeholder="Your message *" value={message} rows={5}
                     onChange={e => { setMessage(e.target.value); setErrors(er => ({ ...er, message: '' })); }}
                     style={{ ...fieldBase, resize: 'vertical', minHeight: 140, ...(errors.message ? { borderColor: '#ef4444' } : {}) }}
