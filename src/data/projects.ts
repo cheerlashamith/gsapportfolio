@@ -2,8 +2,6 @@ import graminImg from '../assets/projects/gramin-card.webp';
 import smartsupportImg from '../assets/projects/smartsupport-card.webp';
 import windowsImg from '../assets/projects/windowsnew.webp';
 import stockeaseImg from '../assets/projects/stockeasenew.webp';
-import mindmitraImg from '../assets/projects/mindmitranew.webp';
-import codearenaImg from '../assets/projects/codearenanew.webp';
 
 export interface Project {
   id: string;
@@ -71,30 +69,5 @@ export const projects: Project[] = [
     badge: null,
     color: '#2ecc71',
     image: stockeaseImg,
-  },
-  {
-    id: 'mindmitra',
-    number: '05',
-    category: 'AI Companion',
-    name: 'MindMitra',
-    description: 'Intelligent, empathetic AI-powered virtual companion offering emotional support and daily guidance with human-like responsiveness. Built for Google Gen AI Exchange Hackathon.',
-    tech: ['React.js', 'SQL', 'Gemini API', 'FastAPI'],
-    liveUrl: 'https://eycovf4cjc3k.devv.app/',
-    badge: null,
-    color: '#f72585',
-    image: mindmitraImg,
-  },
-  {
-    id: 'codearena',
-    number: '06',
-    category: 'EdTech Platform',
-    name: 'CodeArena',
-    description: 'Interactive competitive programming platform with gamified coding challenges, adaptive difficulty levels, real-time leaderboards, and achievement unlocks. Makes DSA practice addictive.',
-    tech: ['React.js', 'FastAPI', 'SQL', 'HTML/CSS'],
-    liveUrl: 'https://shamithcheerla.github.io/codearena',
-    codeUrl: 'https://github.com/shamithcheerla/codearena',
-    badge: null,
-    color: '#f39c12',
-    image: codearenaImg,
   },
 ];
