@@ -138,12 +138,12 @@ function StorytellingDesktop() {
                       onMouseEnter={e => { const el = e.currentTarget; el.style.transform = 'translateY(-3px)'; el.style.boxShadow = '0 12px 30px rgba(82,39,199,0.3)'; }}
                       onMouseLeave={e => { const el = e.currentTarget; el.style.transform = ''; el.style.boxShadow = ''; }}
                     >View Live →</a>
-                  ) : project.badge?.includes('Progress') ? (
+                  ) : (project.badge?.includes('Progress') || project.badge?.includes('Soon')) ? (
                     <span className="story-cta" style={{
                       fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: 14,
-                      color: '#f39c12', border: '2px solid #f39c12',
+                      color: project.color, border: `2px solid ${project.color}`,
                       padding: '12px 28px', borderRadius: 50, opacity: 0,
-                    }}>🔧 In Progress</span>
+                    }}>{project.badge}</span>
                   ) : null}
                   {project.codeUrl && project.codeUrl !== '#' && (
                     <a href={project.codeUrl} target="_blank" rel="noopener noreferrer"
@@ -277,7 +277,7 @@ function MobileProjectCard({ project, index }: { project: typeof projects[0]; in
           style={{ width: '100%', height: 200, objectFit: 'cover', display: 'block' }} />
       </div>
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-        {project.liveUrl && project.liveUrl !== '#' && (
+        {project.liveUrl && project.liveUrl !== '#' ? (
           <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
             style={{
               fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: 13,
@@ -285,7 +285,13 @@ function MobileProjectCard({ project, index }: { project: typeof projects[0]; in
               padding: '8px 20px', borderRadius: 50, textDecoration: 'none',
             }}
           >Live →</a>
-        )}
+        ) : (project.badge?.includes('Progress') || project.badge?.includes('Soon')) ? (
+          <span style={{
+            fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: 13,
+            color: project.color, border: `1.5px solid ${project.color}55`,
+            padding: '8px 20px', borderRadius: 50,
+          }}>{project.badge}</span>
+        ) : null}
         {project.codeUrl && project.codeUrl !== '#' && (
           <a href={project.codeUrl} target="_blank" rel="noopener noreferrer"
             style={{

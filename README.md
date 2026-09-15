@@ -10,7 +10,7 @@ You can view the live portfolio here: **[https://shamith-portfolio.netlify.app/]
 
 - **Immersive Storytelling:** Beautiful, butter-smooth scroll animations powered by GSAP and Framer Motion.
 - **Modern UI/UX:** Glassmorphism design elements, responsive dock menus, and a clean, dynamic layout.
-- **Projects Showcase:** Highlights of my best work including Gramin Sahayak, SmartSupport, Windows 11 Portfolio, and StockEase.
+- **Projects Showcase:** Highlights of my best work including Gramin Sahayak, SmartSupport, Windows 11 Portfolio, StockEase, and MAESTRO.
 - **Hackathons & Achievements:** Infinite-scrolling timeline of hackathons and a dedicated section for academic and technical milestones.
 - **Dynamic Contact Form:** Animated and interactive contact form with custom success notifications.
 
