@@ -2,13 +2,14 @@ import graminImg from '../assets/projects/gramin-card.webp';
 import smartsupportImg from '../assets/projects/smartsupport-card.webp';
 import windowsImg from '../assets/projects/windowsnew.webp';
 import stockeaseImg from '../assets/projects/stockeasenew.webp';
-import maestroImg from '../assets/projects/maestro.jpg';
+import maestroImg from '../assets/projects/maestro.png';
 
 export interface Project {
   id: string;
   number: string;
   category: string;
   name: string;
+  subtitle?: string;
   description: string;
   tech: string[];
   liveUrl?: string | null;
@@ -76,11 +77,12 @@ export const projects: Project[] = [
     number: '05',
     category: 'Multi-Agent AI System',
     name: 'MAESTRO',
-    description: 'Fully autonomous multi-agent AI system that transforms any educational topic into a publication-ready YouTube video with zero manual work. Orchestrates 7 specialized AI agents (Curriculum Planner, Script Writer, Neural Voice, Manim Visualizer, FFmpeg Multiplexer, SEO, and Publisher) via a deterministic Shared Blackboard Architecture.',
+    subtitle: 'Multi-Agent Autonomous Engine for Scalable Transmedia Production & Orchestration',
+    description: 'An AI-Powered YouTube Automation System that transforms any educational topic into a publication-ready video with zero manual work. Orchestrates 7 specialized AI agents (Curriculum Planner, Script Writer, Neural Voice, Manim Visualizer, FFmpeg Multiplexer, SEO, and Publisher) via a deterministic Shared Blackboard Architecture.',
     tech: ['FastAPI', 'React 19', 'Manim', 'GPT-4o', 'Edge-TTS', 'FFmpeg', 'YouTube API'],
-    liveUrl: null,
+    liveUrl: '#',
     codeUrl: null,
-    badge: '🚀 Live Demo Soon',
+    badge: null,
     color: '#8B5CF6',
     image: maestroImg,
   },

@@ -38,6 +38,11 @@ function StorytellingDesktop() {
           .fromTo(`${scene} .story-desc`, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.3)
           .fromTo(`${scene} .story-tech-tag`, { opacity: 0, y: 10 }, { opacity: 1, y: 0, stagger: 0.03, duration: 0.4, ease: 'power2.out' }, 0.35)
           .fromTo(`${scene} .story-cta`, { opacity: 0, y: 10 }, { opacity: 1, y: 0, stagger: 0.05, duration: 0.4, ease: 'power2.out' }, 0.4);
+
+        const subEl = containerRef.current?.querySelector(`${scene} .story-subtitle`);
+        if (subEl) {
+          tl.fromTo(subEl, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.2);
+        }
       });
     }, containerRef);
 
@@ -102,8 +107,17 @@ function StorytellingDesktop() {
                 <h2 className="story-name" style={{
                   fontFamily: "'Libre Baskerville', serif", fontWeight: 900,
                   fontSize: 'clamp(2.2rem, 4.5vw, 3.8rem)', color: '#1a1a2e',
-                  lineHeight: 1.08, marginBottom: 20, opacity: 0,
+                  lineHeight: 1.08, marginBottom: project.subtitle ? 8 : 20, opacity: 0,
                 }}>{project.name}</h2>
+
+                {/* Full Form / Subtitle */}
+                {project.subtitle && (
+                  <p className="story-subtitle" style={{
+                    fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(12px, 1.05vw, 14px)',
+                    color: project.color, fontWeight: 600, letterSpacing: '0.03em',
+                    lineHeight: 1.45, marginBottom: 18, maxWidth: 520, opacity: 0,
+                  }}>{project.subtitle}</p>
+                )}
 
                 {/* Description */}
                 <p className="story-desc" style={{
@@ -126,14 +140,15 @@ function StorytellingDesktop() {
 
                 {/* CTA buttons */}
                 <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-                  {project.liveUrl && project.liveUrl !== '#' ? (
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
+                  {project.liveUrl ? (
+                    <a href={project.liveUrl} target={project.liveUrl === '#' ? '_self' : '_blank'} rel="noopener noreferrer"
                       className="story-cta"
                       style={{
                         fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: 14,
                         color: '#fff', background: 'linear-gradient(135deg, #5227c7, #7c3aed)',
                         padding: '12px 30px', borderRadius: 50, textDecoration: 'none',
                         transition: 'transform 0.3s, box-shadow 0.3s', opacity: 0,
+                        cursor: 'pointer',
                       }}
                       onMouseEnter={e => { const el = e.currentTarget; el.style.transform = 'translateY(-3px)'; el.style.boxShadow = '0 12px 30px rgba(82,39,199,0.3)'; }}
                       onMouseLeave={e => { const el = e.currentTarget; el.style.transform = ''; el.style.boxShadow = ''; }}
@@ -259,8 +274,14 @@ function MobileProjectCard({ project, index }: { project: typeof projects[0]; in
       }}>{project.category}</p>
       <h3 style={{
         fontFamily: "'Libre Baskerville', serif", fontWeight: 800, fontSize: 24,
-        color: '#1a1a2e', marginBottom: 10,
+        color: '#1a1a2e', marginBottom: project.subtitle ? 4 : 10,
       }}>{project.name}</h3>
+      {project.subtitle && (
+        <p style={{
+          fontFamily: 'Space Grotesk, sans-serif', fontSize: 12, fontWeight: 600,
+          color: project.color, letterSpacing: '0.02em', lineHeight: 1.4, marginBottom: 10,
+        }}>{project.subtitle}</p>
+      )}
       <p style={{
         fontFamily: 'Poppins, sans-serif', fontWeight: 300, fontSize: 14,
         color: 'var(--text-muted)', lineHeight: 1.75, marginBottom: 14,
@@ -277,12 +298,13 @@ function MobileProjectCard({ project, index }: { project: typeof projects[0]; in
           style={{ width: '100%', height: 200, objectFit: 'cover', display: 'block' }} />
       </div>
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-        {project.liveUrl && project.liveUrl !== '#' ? (
-          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
+        {project.liveUrl ? (
+          <a href={project.liveUrl} target={project.liveUrl === '#' ? '_self' : '_blank'} rel="noopener noreferrer"
             style={{
               fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: 13,
               color: '#fff', background: 'var(--gradient)',
               padding: '8px 20px', borderRadius: 50, textDecoration: 'none',
+              cursor: 'pointer',
             }}
           >Live →</a>
         ) : (project.badge?.includes('Progress') || project.badge?.includes('Soon')) ? (
