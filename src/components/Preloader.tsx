@@ -7,9 +7,9 @@ const LAST_NAME = ['S', 'H', 'A', 'M', 'I', 'T', 'H'];
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const topShutterRef = useRef<HTMLDivElement>(null);
-  const bottomShutterRef = useRef<HTMLDivElement>(null);
-  const tearLineRef = useRef<HTMLDivElement>(null);
+  const leftCurtainRef = useRef<HTMLDivElement>(null);
+  const rightCurtainRef = useRef<HTMLDivElement>(null);
+  const centerSeamRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleWrapRef = useRef<HTMLDivElement>(null);
   const ruleLeftRef = useRef<HTMLDivElement>(null);
@@ -34,10 +34,10 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       onCompleteRef.current();
     };
 
-    // Safety fallback
+    // Safety fallback: finishes under 2.8 seconds
     const fallbackTimer = setTimeout(() => {
       finish();
-    }, 2400);
+    }, 2600);
 
     const ctx = gsap.context(() => {
       const chars = gsap.utils.toArray<HTMLElement>('.ignition-char');
@@ -49,9 +49,9 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         },
       });
 
-      // 1. Initial pitch black states (Hardware-accelerated transforms for 60/120fps in Chrome)
-      gsap.set([topShutterRef.current, bottomShutterRef.current], { yPercent: 0 });
-      gsap.set(tearLineRef.current, { scaleX: 0, opacity: 0 });
+      // 1. Initial pitch black states (Hardware-accelerated CSS transforms for 60/120fps in Chrome)
+      gsap.set([leftCurtainRef.current, rightCurtainRef.current], { xPercent: 0 });
+      gsap.set(centerSeamRef.current, { scaleY: 0, opacity: 0 });
       gsap.set(chars, {
         opacity: 0.1,
         scale: 0.88,
@@ -90,57 +90,57 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         '-=0.2'
       )
 
-      // 4. ZERO GAP: Electric golden laser tear filament strikes across center
+      // 4. Center vertical golden seam illuminates right at the curtain split line
       .to(
-        tearLineRef.current,
+        centerSeamRef.current,
         {
-          scaleX: 1,
+          scaleY: 1,
           opacity: 1,
-          duration: 0.12,
+          duration: 0.14,
           ease: 'expo.out',
         },
-        '+=0.04' // instantaneous transition, no dead pause
+        '+=0.04' // instantaneous transition, zero dead pause
       )
 
-      // 5. CINEMATIC SCREEN DIVIDE / TEARING REVEAL
-      // Top half violently tears UP, bottom half tears DOWN
+      // 5. GRAND THEATRICAL CURTAIN OPENING
+      // Left curtain glides LEFT, Right curtain glides RIGHT, unveiling the portfolio stage
       .to(
-        topShutterRef.current,
+        leftCurtainRef.current,
         {
-          yPercent: -100,
-          duration: 0.62,
+          xPercent: -100,
+          duration: 0.82,
           ease: 'power4.inOut',
         },
-        'tear'
+        'curtainOpen'
       )
       .to(
-        bottomShutterRef.current,
+        rightCurtainRef.current,
         {
-          yPercent: 100,
-          duration: 0.62,
+          xPercent: 100,
+          duration: 0.82,
           ease: 'power4.inOut',
         },
-        'tear'
+        'curtainOpen'
       )
       .to(
         contentRef.current,
         {
-          scale: 1.12,
+          scale: 1.08,
           opacity: 0,
-          duration: 0.32,
+          duration: 0.36,
           ease: 'power3.in',
         },
-        'tear'
+        'curtainOpen'
       )
       .to(
-        tearLineRef.current,
+        centerSeamRef.current,
         {
+          scaleX: 16,
           opacity: 0,
-          scaleY: 6,
-          duration: 0.35,
+          duration: 0.42,
           ease: 'power2.out',
         },
-        'tear+=0.04'
+        'curtainOpen+=0.04'
       );
 
     }, containerRef);
@@ -161,53 +161,55 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         zIndex: 99999,
         overflow: 'hidden',
         pointerEvents: 'auto',
-        background: '#000000', // 100% PURE PITCH DARK BLACK
+        background: 'transparent',
       }}
     >
-      {/* CINEMATIC SCREEN DIVIDE: TOP HALF SHUTTER */}
+      {/* THEATRICAL LEFT CURTAIN */}
       <div
-        ref={topShutterRef}
+        ref={leftCurtainRef}
         style={{
           position: 'absolute',
           top: 0,
-          left: 0,
-          right: 0,
-          height: '50.5%', // 0.5% subpixel overlap to prevent seam line
-          background: '#000000',
-          zIndex: 2,
-          pointerEvents: 'none',
-          willChange: 'transform',
-        }}
-      />
-
-      {/* CINEMATIC SCREEN DIVIDE: BOTTOM HALF SHUTTER */}
-      <div
-        ref={bottomShutterRef}
-        style={{
-          position: 'absolute',
           bottom: 0,
           left: 0,
-          right: 0,
-          height: '50.5%', // 0.5% subpixel overlap to prevent seam line
-          background: '#000000',
-          zIndex: 2,
+          width: '50.3%', // subpixel overlap prevents center seam line
+          background: 'linear-gradient(90deg, #020204 0%, #0d0d14 25%, #050508 55%, #101018 78%, #000000 100%)',
+          boxShadow: 'inset -25px 0 45px rgba(0,0,0,0.95), 15px 0 35px rgba(0,0,0,0.8)',
+          zIndex: 3,
           pointerEvents: 'none',
           willChange: 'transform',
         }}
       />
 
-      {/* ELECTRIC GOLDEN HORIZONTAL TEAR FILAMENT */}
+      {/* THEATRICAL RIGHT CURTAIN */}
       <div
-        ref={tearLineRef}
+        ref={rightCurtainRef}
         style={{
           position: 'absolute',
-          top: '50%',
-          left: 0,
+          top: 0,
+          bottom: 0,
           right: 0,
-          height: '3px',
-          transform: 'translateY(-50%)',
-          background: 'linear-gradient(90deg, transparent 0%, rgba(255, 215, 120, 0.6) 15%, #ffffff 50%, rgba(255, 215, 120, 0.6) 85%, transparent 100%)',
-          boxShadow: '0 0 25px #ffffff, 0 0 50px rgba(255, 217, 125, 0.95), 0 0 90px rgba(255, 109, 52, 0.7)',
+          width: '50.3%', // subpixel overlap prevents center seam line
+          background: 'linear-gradient(90deg, #000000 0%, #101018 22%, #050508 45%, #0d0d14 75%, #020204 100%)',
+          boxShadow: 'inset 25px 0 45px rgba(0,0,0,0.95), -15px 0 35px rgba(0,0,0,0.8)',
+          zIndex: 3,
+          pointerEvents: 'none',
+          willChange: 'transform',
+        }}
+      />
+
+      {/* CENTER VERTICAL GOLDEN LIGHT SEAM (Flashes and widens as curtains part) */}
+      <div
+        ref={centerSeamRef}
+        style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '3px',
+          background: 'linear-gradient(180deg, transparent 0%, rgba(255, 215, 120, 0.7) 15%, #ffffff 50%, rgba(255, 215, 120, 0.7) 85%, transparent 100%)',
+          boxShadow: '0 0 25px #ffffff, 0 0 50px rgba(255, 217, 125, 0.95), 0 0 80px rgba(255, 109, 52, 0.7)',
           zIndex: 6,
           pointerEvents: 'none',
           willChange: 'transform, opacity',
