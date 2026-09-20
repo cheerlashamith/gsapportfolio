@@ -34,10 +34,10 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       onCompleteRef.current();
     };
 
-    // Safety fallback: finishes under 2.8 seconds
+    // Safety fallback: guaranteed to release under 2.5 seconds
     const fallbackTimer = setTimeout(() => {
       finish();
-    }, 2600);
+    }, 2500);
 
     const ctx = gsap.context(() => {
       const chars = gsap.utils.toArray<HTMLElement>('.ignition-char');
@@ -49,9 +49,9 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         },
       });
 
-      // 1. Initial pitch black states (Hardware-accelerated CSS transforms for 60/120fps in Chrome)
-      gsap.set([leftCurtainRef.current, rightCurtainRef.current], { xPercent: 0 });
-      gsap.set(centerSeamRef.current, { scaleY: 0, opacity: 0 });
+      // 1. Initial GPU-accelerated hardware states
+      gsap.set([leftCurtainRef.current, rightCurtainRef.current], { xPercent: 0, force3D: true });
+      gsap.set(centerSeamRef.current, { scaleY: 0, opacity: 0, force3D: true });
       gsap.set(chars, {
         opacity: 0.1,
         scale: 0.88,
@@ -74,7 +74,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         [ruleLeftRef.current, ruleRightRef.current],
         {
           scaleX: 1,
-          duration: 0.24,
+          duration: 0.22,
           ease: 'power2.out',
         },
         '-=0.15'
@@ -84,32 +84,32 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         {
           opacity: 1,
           y: 0,
-          duration: 0.22,
+          duration: 0.2,
           ease: 'power2.out',
         },
-        '-=0.2'
+        '-=0.18'
       )
 
-      // 4. Center vertical golden seam illuminates right at the curtain split line
+      // 4. Center vertical golden seam illuminates at curtain split line
       .to(
         centerSeamRef.current,
         {
           scaleY: 1,
           opacity: 1,
-          duration: 0.14,
+          duration: 0.12,
           ease: 'expo.out',
         },
-        '+=0.04' // instantaneous transition, zero dead pause
+        '+=0.03'
       )
 
-      // 5. GRAND THEATRICAL CURTAIN OPENING
-      // Left curtain glides LEFT, Right curtain glides RIGHT, unveiling the portfolio stage
+      // 5. GRAND THEATRICAL CURTAIN OPENING (force3D hardware layer for 60/120fps in Chrome)
       .to(
         leftCurtainRef.current,
         {
           xPercent: -100,
-          duration: 0.82,
-          ease: 'power4.inOut',
+          force3D: true,
+          duration: 0.75,
+          ease: 'power3.inOut',
         },
         'curtainOpen'
       )
@@ -117,30 +117,31 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         rightCurtainRef.current,
         {
           xPercent: 100,
-          duration: 0.82,
-          ease: 'power4.inOut',
+          force3D: true,
+          duration: 0.75,
+          ease: 'power3.inOut',
         },
         'curtainOpen'
       )
       .to(
         contentRef.current,
         {
-          scale: 1.08,
+          scale: 1.06,
           opacity: 0,
-          duration: 0.36,
-          ease: 'power3.in',
+          duration: 0.3,
+          ease: 'power2.in',
         },
         'curtainOpen'
       )
       .to(
         centerSeamRef.current,
         {
-          scaleX: 16,
           opacity: 0,
-          duration: 0.42,
+          scaleX: 3,
+          duration: 0.25,
           ease: 'power2.out',
         },
-        'curtainOpen+=0.04'
+        'curtainOpen'
       );
 
     }, containerRef);
@@ -162,9 +163,10 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         overflow: 'hidden',
         pointerEvents: 'auto',
         background: 'transparent',
+        contain: 'strict', // isolates preloader layout/paint from main page
       }}
     >
-      {/* THEATRICAL LEFT CURTAIN */}
+      {/* THEATRICAL LEFT CURTAIN (Pure Black with Golden Trim Seam) */}
       <div
         ref={leftCurtainRef}
         style={{
@@ -172,16 +174,17 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           top: 0,
           bottom: 0,
           left: 0,
-          width: '50.3%', // subpixel overlap prevents center seam line
-          background: 'linear-gradient(90deg, #020204 0%, #0d0d14 25%, #050508 55%, #101018 78%, #000000 100%)',
-          boxShadow: 'inset -25px 0 45px rgba(0,0,0,0.95), 15px 0 35px rgba(0,0,0,0.8)',
+          width: '50.2%', // subpixel overlap prevents center seam line
+          background: '#000000',
+          borderRight: '1px solid rgba(255, 217, 125, 0.35)',
+          boxShadow: '10px 0 30px rgba(0, 0, 0, 0.9)',
           zIndex: 3,
           pointerEvents: 'none',
           willChange: 'transform',
         }}
       />
 
-      {/* THEATRICAL RIGHT CURTAIN */}
+      {/* THEATRICAL RIGHT CURTAIN (Pure Black with Golden Trim Seam) */}
       <div
         ref={rightCurtainRef}
         style={{
@@ -189,16 +192,17 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           top: 0,
           bottom: 0,
           right: 0,
-          width: '50.3%', // subpixel overlap prevents center seam line
-          background: 'linear-gradient(90deg, #000000 0%, #101018 22%, #050508 45%, #0d0d14 75%, #020204 100%)',
-          boxShadow: 'inset 25px 0 45px rgba(0,0,0,0.95), -15px 0 35px rgba(0,0,0,0.8)',
+          width: '50.2%', // subpixel overlap prevents center seam line
+          background: '#000000',
+          borderLeft: '1px solid rgba(255, 217, 125, 0.35)',
+          boxShadow: '-10px 0 30px rgba(0, 0, 0, 0.9)',
           zIndex: 3,
           pointerEvents: 'none',
           willChange: 'transform',
         }}
       />
 
-      {/* CENTER VERTICAL GOLDEN LIGHT SEAM (Flashes and widens as curtains part) */}
+      {/* CENTER VERTICAL GOLDEN LIGHT SEAM */}
       <div
         ref={centerSeamRef}
         style={{
@@ -207,9 +211,9 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           bottom: 0,
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '3px',
-          background: 'linear-gradient(180deg, transparent 0%, rgba(255, 215, 120, 0.7) 15%, #ffffff 50%, rgba(255, 215, 120, 0.7) 85%, transparent 100%)',
-          boxShadow: '0 0 25px #ffffff, 0 0 50px rgba(255, 217, 125, 0.95), 0 0 80px rgba(255, 109, 52, 0.7)',
+          width: '2px',
+          background: 'linear-gradient(180deg, transparent 0%, #ffd97d 20%, #ffffff 50%, #ffd97d 80%, transparent 100%)',
+          boxShadow: '0 0 15px rgba(255, 217, 125, 0.9), 0 0 35px rgba(255, 109, 52, 0.6)',
           zIndex: 6,
           pointerEvents: 'none',
           willChange: 'transform, opacity',
