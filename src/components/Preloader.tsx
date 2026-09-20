@@ -153,12 +153,11 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         pointerEvents: 'auto',
       }}
     >
-      {/* 5 VERTICAL PURE BLACK SHUTTER STRIPS (Wave Reveal) */}
+      {/* 5 VERTICAL PURE BLACK SHUTTER STRIPS (Seamless Wave Reveal) */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          display: 'flex',
           zIndex: 1,
           pointerEvents: 'none',
         }}
@@ -168,12 +167,15 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
             key={i}
             className="shutter-strip"
             style={{
-              flex: 1,
-              height: '100%',
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: `${i * 20}%`,
+              width: '20.2%', // slight overlap eliminates any subpixel seam lines
               background: '#000000', // PURE BLACK
-              position: 'relative',
+              border: 'none',
+              outline: 'none',
               willChange: 'transform',
-              borderRight: i < 4 ? '1px solid rgba(255, 255, 255, 0.03)' : 'none',
             }}
           />
         ))}
