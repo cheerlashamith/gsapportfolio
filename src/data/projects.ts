@@ -54,7 +54,7 @@ export const projects: Project[] = [
     description: 'A completely unique, fully interactive web-based operating system portfolio mimicking Windows 11. Features draggable windows, a functional taskbar, start menu, and smooth OS-level animations built entirely with React and Tailwind CSS.',
     tech: ['React', 'Tailwind CSS', 'Framer Motion'],
     liveUrl: 'https://shamith-portfolio.netlify.app/',
-    codeUrl: 'https://github.com/cheerlashamith/windows11-portfolio',
+    codeUrl: null,
     badge: '✨ Unique Concept',
     color: '#0078D4',
     image: windowsImg,
