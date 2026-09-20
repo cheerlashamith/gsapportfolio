@@ -4,11 +4,12 @@ import gsap from 'gsap';
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const flareRef = useRef<HTMLDivElement>(null);
   const emblemRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLDivElement>(null);
-  const yearTagRef = useRef<HTMLDivElement>(null);
-  const lineAccentRef = useRef<HTMLDivElement>(null);
+  const subtitleWrapRef = useRef<HTMLDivElement>(null);
+  const ruleLeftRef = useRef<HTMLDivElement>(null);
+  const ruleRightRef = useRef<HTMLDivElement>(null);
 
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
@@ -43,82 +44,106 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         },
       });
 
-      // Initial States
+      // 1. Initial CSS states
       gsap.set(strips, { yPercent: 0 });
-      gsap.set(emblemRef.current, { scale: 0.7, opacity: 0, y: -20 });
-      gsap.set(titleRef.current, { opacity: 0, y: 35, letterSpacing: '0.02em' });
-      gsap.set(lineAccentRef.current, { scaleX: 0 });
-      gsap.set(subtitleRef.current, { opacity: 0, y: 15 });
-      gsap.set(yearTagRef.current, { opacity: 0, scale: 0.9 });
+      gsap.set(flareRef.current, { scaleX: 0, opacity: 0, scaleY: 1 });
+      gsap.set(emblemRef.current, { scale: 0.65, opacity: 0, filter: 'blur(10px)' });
+      gsap.set(titleRef.current, { opacity: 0, y: 30, letterSpacing: '0.04em' });
+      gsap.set([ruleLeftRef.current, ruleRightRef.current], { scaleX: 0 });
+      gsap.set(subtitleWrapRef.current, { opacity: 0, y: 14 });
 
-      // 1. Emblem drops in with spring physics
-      tl.to(emblemRef.current, {
-        scale: 1,
+      // 2. Anamorphic horizontal lens flare expands from center
+      tl.to(flareRef.current, {
+        scaleX: 1,
         opacity: 1,
-        y: 0,
         duration: 0.55,
-        ease: 'back.out(1.5)',
-      });
+        ease: 'power3.out',
+      })
+      // 3. Studio Monogram CS rises from the flare with spring physics
+      .to(
+        emblemRef.current,
+        {
+          scale: 1,
+          opacity: 1,
+          filter: 'blur(0px)',
+          duration: 0.65,
+          ease: 'back.out(1.5)',
+        },
+        '-=0.3'
+      )
+      // Flare dissolves into an ambient background bloom
+      .to(
+        flareRef.current,
+        {
+          opacity: 0,
+          scaleY: 12,
+          filter: 'blur(25px)',
+          duration: 0.6,
+          ease: 'power2.out',
+        },
+        '-=0.45'
+      );
 
-      // 2. Bold Name CHEERLA SHAMITH rises and tracks out
+      // 4. Headline CHEERLA SHAMITH enters with tracking expansion
       tl.to(
         titleRef.current,
         {
           opacity: 1,
           y: 0,
-          letterSpacing: '0.14em',
-          duration: 0.65,
+          letterSpacing: '0.12em',
+          duration: 0.7,
           ease: 'power3.out',
         },
-        '-=0.3'
+        '-=0.45'
       );
 
-      // 3. Central glowing accent line extends outward
+      // 5. Specular metallic shimmer sweeps across the typography
+      tl.fromTo(
+        titleRef.current,
+        { backgroundPosition: '220% center' },
+        {
+          backgroundPosition: '-50% center',
+          duration: 1.1,
+          ease: 'power2.inOut',
+        },
+        '-=0.55'
+      );
+
+      // 6. Hairline rules expand and subtitle reveals
       tl.to(
-        lineAccentRef.current,
+        [ruleLeftRef.current, ruleRightRef.current],
         {
           scaleX: 1,
           duration: 0.55,
-          ease: 'power2.inOut',
+          ease: 'power2.out',
         },
-        '-=0.35'
-      );
-
-      // 4. Subtitle & Year tag reveal
-      tl.to(
-        subtitleRef.current,
+        '-=0.6'
+      )
+      .to(
+        subtitleWrapRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 0.45,
+          duration: 0.5,
           ease: 'power2.out',
         },
-        '-=0.3'
-      )
-      .to(
-        yearTagRef.current,
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.4,
-          ease: 'back.out(1.3)',
-        },
-        '-=0.25'
+        '-=0.5'
       );
 
-      // 5. Brief hold for visual impact
+      // 7. Cinematic hold to admire
       tl.to({}, { duration: 0.45 });
 
-      // 6. Central typography dissolves slightly forward
+      // 8. Typography dissolves forward with depth
       tl.to(contentRef.current, {
         opacity: 0,
-        scale: 1.06,
+        scale: 1.05,
         y: -25,
-        duration: 0.35,
+        filter: 'blur(6px)',
+        duration: 0.4,
         ease: 'power3.in',
       });
 
-      // 7. Staggered Multi-Column Shutter Wave (Striking Vertical Slice Reveal)
+      // 9. Concept 4 Staggered 5-Column Shutter Wave Reveal
       tl.to(
         strips,
         {
@@ -171,7 +196,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
               top: 0,
               bottom: 0,
               left: `${i * 20}%`,
-              width: '20.2%', // slight overlap eliminates any subpixel seam lines
+              width: '20.2%', // slight overlap guarantees zero subpixel lines on any DPI scaling
               background: '#000000', // PURE BLACK
               border: 'none',
               outline: 'none',
@@ -180,6 +205,55 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           />
         ))}
       </div>
+
+      {/* AMBIENT LUXURY SPOTLIGHTS */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '25%',
+          left: '30%',
+          width: '600px',
+          height: '400px',
+          borderRadius: '50%',
+          background: 'radial-gradient(ellipse, rgba(82, 39, 199, 0.24) 0%, transparent 70%)',
+          filter: 'blur(90px)',
+          pointerEvents: 'none',
+          zIndex: 2,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '25%',
+          right: '30%',
+          width: '550px',
+          height: '380px',
+          borderRadius: '50%',
+          background: 'radial-gradient(ellipse, rgba(255, 109, 52, 0.16) 0%, transparent 70%)',
+          filter: 'blur(90px)',
+          pointerEvents: 'none',
+          zIndex: 2,
+        }}
+      />
+
+      {/* ANAMORPHIC HORIZONTAL LENS FLARE */}
+      <div
+        ref={flareRef}
+        style={{
+          position: 'absolute',
+          top: '46%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 'clamp(280px, 80vw, 750px)',
+          height: '2px',
+          background: 'linear-gradient(90deg, transparent 0%, rgba(82, 39, 199, 0.7) 20%, #ffffff 50%, rgba(255, 109, 52, 0.7) 80%, transparent 100%)',
+          boxShadow: '0 0 25px rgba(255, 255, 255, 0.9), 0 0 50px rgba(82, 39, 199, 0.8), 0 0 80px rgba(255, 109, 52, 0.6)',
+          borderRadius: '999px',
+          pointerEvents: 'none',
+          zIndex: 3,
+          willChange: 'transform, opacity, filter',
+        }}
+      />
 
       {/* CENTRAL TYPOGRAPHIC CONTENT */}
       <div
@@ -195,67 +269,57 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           padding: '24px',
           textAlign: 'center',
           userSelect: 'none',
-          willChange: 'transform, opacity',
+          willChange: 'transform, opacity, filter',
+          maxWidth: '92vw',
+          margin: '0 auto',
         }}
       >
-        {/* Soft Ambient Spotlight (Royal Purple & Solar Orange, strictly no red/maroon) */}
-        <div
-          style={{
-            position: 'absolute',
-            width: '600px',
-            height: '400px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(82, 39, 199, 0.28) 0%, rgba(255, 109, 52, 0.12) 40%, transparent 70%)',
-            filter: 'blur(90px)',
-            pointerEvents: 'none',
-            zIndex: -1,
-          }}
-        />
-
-        {/* 1. Monogram Crest */}
+        {/* 1. Studio Monogram Emblem */}
         <div
           ref={emblemRef}
           style={{
             position: 'relative',
-            width: '80px',
-            height: '80px',
-            marginBottom: '26px',
-            willChange: 'transform, opacity',
+            width: '84px',
+            height: '84px',
+            marginBottom: '30px',
+            willChange: 'transform, opacity, filter',
           }}
         >
-          {/* Subtle Outer Conic Aura */}
+          {/* Luminous Pulsing Halo */}
           <div
             style={{
               position: 'absolute',
-              inset: '-4px',
-              borderRadius: '26px',
-              background: 'linear-gradient(135deg, #5227c7, #ff6d34)',
-              opacity: 0.7,
-              filter: 'blur(10px)',
+              inset: '-5px',
+              borderRadius: '28px',
+              background: 'linear-gradient(135deg, rgba(82, 39, 199, 0.75), rgba(255, 109, 52, 0.65))',
+              filter: 'blur(12px)',
+              opacity: 0.85,
             }}
           />
 
-          {/* Pure Black Inner Card with Crisp Border */}
+          {/* Pure Black Frosted Glass Emblem */}
           <div
             style={{
               position: 'relative',
               width: '100%',
               height: '100%',
               borderRadius: '22px',
-              background: '#0a0a12',
-              border: '1.5px solid rgba(255, 255, 255, 0.2)',
+              background: 'linear-gradient(145deg, #11111a, #07070d)',
+              border: '1.5px solid rgba(255, 255, 255, 0.22)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 12px 30px rgba(0,0,0,0.8)',
+              boxShadow: '0 12px 35px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.3)',
             }}
           >
             <span
               style={{
                 fontFamily: "'Space Grotesk', sans-serif",
                 fontWeight: 900,
-                fontSize: '26px',
-                color: '#ffffff',
+                fontSize: '28px',
+                background: 'linear-gradient(135deg, #ffffff 40%, #ff6d34 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
                 letterSpacing: '1px',
               }}
             >
@@ -264,90 +328,86 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           </div>
         </div>
 
-        {/* 2. Bold Name Title (Pure White with Subtle Lighting) */}
+        {/* 2. Bold Metallic Typographic Title */}
         <h1
           ref={titleRef}
           style={{
             fontFamily: "'Libre Baskerville', serif",
-            fontSize: 'clamp(2.1rem, 6vw, 4.4rem)',
+            fontSize: 'clamp(2.1rem, 5.8vw, 4.2rem)',
             fontWeight: 900,
             lineHeight: 1.15,
-            color: '#ffffff', // PURE WHITE
+            marginBottom: '20px',
             textTransform: 'uppercase',
-            marginBottom: '16px',
-            willChange: 'transform, opacity, letter-spacing',
-            textShadow: '0 4px 30px rgba(0,0,0,0.9), 0 0 50px rgba(82, 39, 199, 0.4)',
+            willChange: 'transform, opacity, letter-spacing, background-position',
+            // Liquid metallic shimmer gradient (silver, white, orange, purple)
+            background: 'linear-gradient(105deg, #a0a0b8 0%, #ffffff 25%, #ff9e75 50%, #ffffff 75%, #8c7ae6 100%)',
+            backgroundSize: '250% auto',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            textShadow: '0 10px 40px rgba(0,0,0,0.5)',
           }}
         >
           CHEERLA SHAMITH
         </h1>
 
-        {/* 3. Glowing Center Accent Line */}
+        {/* 3. Hairline Rule & Subtitle Presentation */}
         <div
-          ref={lineAccentRef}
-          style={{
-            width: 'clamp(180px, 35vw, 360px)',
-            height: '2px',
-            background: 'linear-gradient(90deg, transparent, #5227c7, #ff6d34, transparent)',
-            boxShadow: '0 0 12px rgba(255, 109, 52, 0.8)',
-            borderRadius: '999px',
-            marginBottom: '20px',
-            transformOrigin: 'center',
-            willChange: 'transform',
-          }}
-        />
-
-        {/* 4. Subtitle: Clean & Architectural */}
-        <div
-          ref={subtitleRef}
+          ref={subtitleWrapRef}
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '10px',
-            marginBottom: '24px',
-            willChange: 'transform, opacity',
+            gap: 'clamp(12px, 2.5vw, 24px)',
+            width: '100%',
+            maxWidth: '680px',
           }}
         >
-          <span
+          {/* Left Hairline Rule */}
+          <div
+            ref={ruleLeftRef}
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(11.5px, 1.3vw, 14px)',
-              fontWeight: 600,
-              letterSpacing: '0.28em',
-              textTransform: 'uppercase',
-              color: 'rgba(255, 255, 255, 0.75)',
+              flex: 1,
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, rgba(255, 109, 52, 0.5), rgba(255, 255, 255, 0.7))',
+              transformOrigin: 'right center',
             }}
-          >
-            Full-Stack Developer <span style={{ color: '#ff6d34', margin: '0 4px' }}>•</span> AI Systems Engineer
-          </span>
-        </div>
+          />
 
-        {/* 5. Minimalist Glass Year Badge */}
-        <div
-          ref={yearTagRef}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            padding: '5px 16px',
-            borderRadius: '999px',
-            background: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            willChange: 'transform, opacity',
-          }}
-        >
-          <span
+          {/* Subtitle with Star Gem Accents */}
+          <div
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: '#ff6d34',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              whiteSpace: 'nowrap',
             }}
           >
-            PORTFOLIO // 2026
-          </span>
+            <span style={{ color: '#ff6d34', fontSize: '11px' }}>✦</span>
+            <span
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 'clamp(11.5px, 1.4vw, 13.5px)',
+                fontWeight: 600,
+                letterSpacing: '0.26em',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.85)',
+              }}
+            >
+              FULL-STACK DEVELOPER • AI SYSTEMS ENGINEER
+            </span>
+            <span style={{ color: '#ff6d34', fontSize: '11px' }}>✦</span>
+          </div>
+
+          {/* Right Hairline Rule */}
+          <div
+            ref={ruleRightRef}
+            style={{
+              flex: 1,
+              height: '1px',
+              background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.7), rgba(82, 39, 199, 0.5), transparent)',
+              transformOrigin: 'left center',
+            }}
+          />
         </div>
       </div>
     </div>
