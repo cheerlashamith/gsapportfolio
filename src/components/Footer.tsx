@@ -7,7 +7,7 @@ const NAV_IDS   = ['hero','about','skills','projects','timeline','hackathons','c
 const SOCIALS = [
   { icon: 'fab fa-linkedin-in', href: 'https://www.linkedin.com/in/cheerla-shamith-a420472a0', label: 'LinkedIn' },
   { icon: 'fab fa-github',      href: 'https://github.com/cheerlashamith',                     label: 'GitHub'   },
-  { icon: 'fas fa-code',        href: 'https://www.codechef.com/users/sasihackerrr',            label: 'CodeChef' },
+  { icon: 'fas fa-code',        href: 'https://www.codechef.com/users/shamithcheerla',          label: 'CodeChef' },
   { icon: 'fab fa-instagram',   href: 'https://www.instagram.com/starshami888/',                label: 'Instagram'},
 ];
 

@@ -209,7 +209,7 @@ export default function HeroSection({ preloaderDone }: { preloaderDone: boolean 
                 {[
                   { icon: 'fab fa-linkedin-in', href: 'https://www.linkedin.com/in/cheerla-shamith-a420472a0', label: 'LinkedIn',  hoverColor: '#0077b5' },
                   { icon: 'fab fa-github',      href: 'https://github.com/cheerlashamith',                     label: 'GitHub',    hoverColor: '#181717' },
-                  { icon: 'fas fa-code',        href: 'https://www.codechef.com/users/sasihackerrr',            label: 'CodeChef',  hoverColor: '#5B4638' },
+                  { icon: 'fas fa-code',        href: 'https://www.codechef.com/users/shamithcheerla',          label: 'CodeChef',  hoverColor: '#5B4638' },
                   { icon: 'fab fa-instagram',   href: 'https://www.instagram.com/starshami888/',                label: 'Instagram', hoverColor: '#E1306C' },
                 ].map(s => (
                   <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}

@@ -1,6 +1,6 @@
 // src/data/achievements.ts
 export const achievements = [
-  { icon: 'fas fa-star',       title: 'CodeChef 3 Star',          description: '3-Star rated on CodeChef. Solved 2,000+ algorithmic and data structure problems across competitive programming platforms.',        link: null },
+  { icon: 'fas fa-star',       title: 'CodeChef 3 Star',          description: '3-Star rated on CodeChef. Solved 2,000+ algorithmic and data structure problems across competitive programming platforms.',        link: 'https://www.codechef.com/users/shamithcheerla', linkText: 'View Profile' },
   { icon: 'fab fa-aws',        title: 'AWS × Hack2skill Finalist',        description: 'Shortlisted nationwide — Top 100 of 1 Lakh participants — for Gramin Sahayak. $100 AWS credits awarded for prototype phase.',           link: null },
   { icon: 'fas fa-landmark',   title: 'MoSPI, Govt. of India',            description: 'Selected under Group A from a large national applicant pool for the Ministry of Statistics & Programme Implementation Statistical Internship.', link: null },
   { icon: 'fas fa-medal',      title: 'Academic Excellence',              description: '9.32 CGPA (Sem I–VI) at SASI Institute. 98.2% in Intermediate (<strong>EAMCET Rank 3292</strong>). 100% in SSC. Consistent top performer.',              link: null },
