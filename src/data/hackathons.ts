@@ -12,7 +12,8 @@ export const hackathons = [
     organizer: 'Google Developer Student Clubs',
     description: 'Built a solution for local community problems using Google technologies under the global GDSC challenge framework.',
     logo: solutionLogo,
-    glowColor: '#4285F4', badge: null, certificate: null,
+    glowColor: '#4285F4', badge: null,
+    certificate: 'https://certificate.hack2skill.com/claim/eb0dc7eee1b0ffe489ffa1f3ce1585a3f666779d9a69f8988785f9eca269ef02',
     projectUrl: 'https://agiis.netlify.app/',
   },
   {

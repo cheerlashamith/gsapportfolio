@@ -28,8 +28,26 @@ gsap.ticker.add((time: number) => {
   lenis.raf(time * 1000);
 });
 
-// 3. Disable lagSmoothing so GSAP animations track the Lenis frame in real-time
-gsap.ticker.lagSmoothing(0);
+// 3. Keep standard lagSmoothing to prevent frame stutter in Chrome
+gsap.ticker.lagSmoothing(500, 33);
+
+// 4. Purge any stale service workers or caches that cause Chrome lag
+if (typeof window !== 'undefined') {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+  if ('caches' in window) {
+    caches.keys().then((names) => {
+      for (const name of names) {
+        caches.delete(name);
+      }
+    });
+  }
+}
 
 // Export lenis so sections can use lenis.scrollTo()
 export { lenis };

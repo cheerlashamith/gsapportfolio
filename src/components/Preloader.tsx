@@ -7,7 +7,9 @@ const LAST_NAME = ['S', 'H', 'A', 'M', 'I', 'T', 'H'];
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const flareRef = useRef<HTMLDivElement>(null);
+  const topShutterRef = useRef<HTMLDivElement>(null);
+  const bottomShutterRef = useRef<HTMLDivElement>(null);
+  const tearLineRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleWrapRef = useRef<HTMLDivElement>(null);
   const ruleLeftRef = useRef<HTMLDivElement>(null);
@@ -32,13 +34,12 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       onCompleteRef.current();
     };
 
-    // Safety fallback: finishes under 3 seconds
+    // Safety fallback
     const fallbackTimer = setTimeout(() => {
       finish();
-    }, 2800);
+    }, 2400);
 
     const ctx = gsap.context(() => {
-      const strips = gsap.utils.toArray<HTMLElement>('.shutter-strip');
       const chars = gsap.utils.toArray<HTMLElement>('.ignition-char');
 
       const tl = gsap.timeline({
@@ -48,99 +49,98 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         },
       });
 
-      // 1. Initial pitch black states
-      gsap.set(strips, { yPercent: 0 });
-      gsap.set(flareRef.current, { scaleX: 0, opacity: 0, scaleY: 1 });
+      // 1. Initial pitch black states (Hardware-accelerated transforms for 60/120fps in Chrome)
+      gsap.set([topShutterRef.current, bottomShutterRef.current], { yPercent: 0 });
+      gsap.set(tearLineRef.current, { scaleX: 0, opacity: 0 });
       gsap.set(chars, {
-        opacity: 0.08,
+        opacity: 0.1,
         scale: 0.88,
-        y: 10,
-        filter: 'drop-shadow(0 0 0px rgba(255, 215, 120, 0))',
+        y: 8,
       });
       gsap.set([ruleLeftRef.current, ruleRightRef.current], { scaleX: 0 });
-      gsap.set(subtitleWrapRef.current, { opacity: 0, y: 12 });
+      gsap.set(subtitleWrapRef.current, { opacity: 0, y: 10 });
 
-      // 2. Anamorphic horizontal optical beam ignition
-      tl.to(flareRef.current, {
-        scaleX: 1,
+      // 2. High-speed racing car letter-by-letter ignition in goldish-white
+      tl.to(chars, {
         opacity: 1,
-        duration: 0.38,
-        ease: 'power3.out',
+        scale: 1,
+        y: 0,
+        duration: 0.14,
+        stagger: 0.038, // 14 letters ignite in ~0.53s
+        ease: 'back.out(2)',
       })
-      // 3. Racing car / Lights-Camera-Action: Letter-by-letter lights turning ON
+      // 3. Hairlines & subtitle reveal immediately
       .to(
-        chars,
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          filter: 'drop-shadow(0 0 24px rgba(255, 220, 130, 0.95)) drop-shadow(0 0 50px rgba(255, 185, 60, 0.6))',
-          duration: 0.16,
-          stagger: 0.042, // high-speed ignition: all 14 letters ignite in ~0.58s
-          ease: 'back.out(2.2)',
-        },
-        '-=0.22'
-      )
-      // Flare dissolves into subtle ambient light
-      .to(
-        flareRef.current,
-        {
-          opacity: 0,
-          scaleY: 10,
-          filter: 'blur(30px)',
-          duration: 0.45,
-          ease: 'power2.out',
-        },
-        '-=0.35'
-      );
-
-      // 4. Hairline rules expand and subtitle lights up in goldish-white
-      tl.to(
         [ruleLeftRef.current, ruleRightRef.current],
         {
           scaleX: 1,
-          duration: 0.32,
+          duration: 0.24,
           ease: 'power2.out',
         },
-        '-=0.25'
+        '-=0.15'
       )
       .to(
         subtitleWrapRef.current,
         {
           opacity: 1,
           y: 0,
-          duration: 0.28,
+          duration: 0.22,
           ease: 'power2.out',
         },
-        '-=0.28'
-      );
+        '-=0.2'
+      )
 
-      // 5. Brief cinematic hold to admire fully illuminated gold name (~0.35s)
-      tl.to({}, { duration: 0.35 });
+      // 4. ZERO GAP: Electric golden laser tear filament strikes across center
+      .to(
+        tearLineRef.current,
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: 0.12,
+          ease: 'expo.out',
+        },
+        '+=0.04' // instantaneous transition, no dead pause
+      )
 
-      // 6. Typography surges forward into light
-      tl.to(contentRef.current, {
-        opacity: 0,
-        scale: 1.05,
-        y: -18,
-        filter: 'blur(8px)',
-        duration: 0.26,
-        ease: 'power2.in',
-      });
-
-      // 7. High-speed 5-Column Shutter Wave curtain reveal into portfolio (~0.6s)
-      tl.to(
-        strips,
+      // 5. CINEMATIC SCREEN DIVIDE / TEARING REVEAL
+      // Top half violently tears UP, bottom half tears DOWN
+      .to(
+        topShutterRef.current,
         {
           yPercent: -100,
-          duration: 0.6,
-          stagger: {
-            each: 0.05,
-            from: 'start', // wave from left to right
-          },
+          duration: 0.62,
           ease: 'power4.inOut',
         },
-        '-=0.08'
+        'tear'
+      )
+      .to(
+        bottomShutterRef.current,
+        {
+          yPercent: 100,
+          duration: 0.62,
+          ease: 'power4.inOut',
+        },
+        'tear'
+      )
+      .to(
+        contentRef.current,
+        {
+          scale: 1.12,
+          opacity: 0,
+          duration: 0.32,
+          ease: 'power3.in',
+        },
+        'tear'
+      )
+      .to(
+        tearLineRef.current,
+        {
+          opacity: 0,
+          scaleY: 6,
+          duration: 0.35,
+          ease: 'power2.out',
+        },
+        'tear+=0.04'
       );
 
     }, containerRef);
@@ -164,50 +164,53 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         background: '#000000', // 100% PURE PITCH DARK BLACK
       }}
     >
-      {/* 5 VERTICAL PURE BLACK SHUTTER STRIPS (Seamless Shutter Wave Reveal) */}
+      {/* CINEMATIC SCREEN DIVIDE: TOP HALF SHUTTER */}
       <div
+        ref={topShutterRef}
         style={{
           position: 'absolute',
-          inset: 0,
-          zIndex: 1,
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '50.5%', // 0.5% subpixel overlap to prevent seam line
+          background: '#000000',
+          zIndex: 2,
           pointerEvents: 'none',
+          willChange: 'transform',
         }}
-      >
-        {[0, 1, 2, 3, 4].map((i) => (
-          <div
-            key={i}
-            className="shutter-strip"
-            style={{
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              left: `${i * 20}%`,
-              width: '20.2%', // subpixel overlap guarantees zero vertical lines on any DPI display
-              background: '#000000', // PURE PITCH BLACK
-              border: 'none',
-              outline: 'none',
-              willChange: 'transform',
-            }}
-          />
-        ))}
-      </div>
+      />
 
-      {/* ANAMORPHIC HORIZONTAL OPTICAL BEAM (Lights Camera Action Lens Line) */}
+      {/* CINEMATIC SCREEN DIVIDE: BOTTOM HALF SHUTTER */}
       <div
-        ref={flareRef}
+        ref={bottomShutterRef}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '50.5%', // 0.5% subpixel overlap to prevent seam line
+          background: '#000000',
+          zIndex: 2,
+          pointerEvents: 'none',
+          willChange: 'transform',
+        }}
+      />
+
+      {/* ELECTRIC GOLDEN HORIZONTAL TEAR FILAMENT */}
+      <div
+        ref={tearLineRef}
         style={{
           position: 'absolute',
           top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 'clamp(280px, 80vw, 850px)',
-          height: '2px',
-          background: 'linear-gradient(90deg, transparent 0%, rgba(255, 215, 120, 0.5) 20%, #ffffff 50%, rgba(255, 190, 60, 0.6) 80%, transparent 100%)',
-          boxShadow: '0 0 25px rgba(255, 230, 140, 0.95), 0 0 55px rgba(255, 185, 50, 0.7)',
-          borderRadius: '999px',
+          left: 0,
+          right: 0,
+          height: '3px',
+          transform: 'translateY(-50%)',
+          background: 'linear-gradient(90deg, transparent 0%, rgba(255, 215, 120, 0.6) 15%, #ffffff 50%, rgba(255, 215, 120, 0.6) 85%, transparent 100%)',
+          boxShadow: '0 0 25px #ffffff, 0 0 50px rgba(255, 217, 125, 0.95), 0 0 90px rgba(255, 109, 52, 0.7)',
+          zIndex: 6,
           pointerEvents: 'none',
-          zIndex: 3,
-          willChange: 'transform, opacity, filter',
+          willChange: 'transform, opacity',
         }}
       />
 
@@ -225,12 +228,12 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           padding: '24px',
           textAlign: 'center',
           userSelect: 'none',
-          willChange: 'transform, opacity, filter',
+          willChange: 'transform, opacity',
           maxWidth: '94vw',
           margin: '0 auto',
         }}
       >
-        {/* BOLD GOLDISH-WHITE RACING IGNITION TYPOGRAPHY (LETTER-BY-LETTER) */}
+        {/* GOLDISH-WHITE RACING IGNITION TYPOGRAPHY */}
         <h1
           ref={titleRef}
           style={{
@@ -257,11 +260,9 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                 className="ignition-char"
                 style={{
                   display: 'inline-block',
-                  background: 'linear-gradient(135deg, #ffffff 0%, #fff7dc 25%, #ffd97d 55%, #fffbf0 78%, #f6c050 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  color: '#fff8e7',
-                  willChange: 'transform, opacity, filter',
+                  color: '#fffaf0',
+                  textShadow: '0 0 20px rgba(255, 220, 130, 0.9), 0 0 45px rgba(255, 185, 60, 0.6)',
+                  willChange: 'transform, opacity',
                 }}
               >
                 {char}
@@ -277,11 +278,9 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                 className="ignition-char"
                 style={{
                   display: 'inline-block',
-                  background: 'linear-gradient(135deg, #ffffff 0%, #fff7dc 25%, #ffd97d 55%, #fffbf0 78%, #f6c050 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  color: '#fff8e7',
-                  willChange: 'transform, opacity, filter',
+                  color: '#fffaf0',
+                  textShadow: '0 0 20px rgba(255, 220, 130, 0.9), 0 0 45px rgba(255, 185, 60, 0.6)',
+                  willChange: 'transform, opacity',
                 }}
               >
                 {char}
@@ -330,7 +329,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                 fontWeight: 600,
                 letterSpacing: '0.26em',
                 textTransform: 'uppercase',
-                color: '#fff8e7', // GOLDISH WHITE
+                color: '#fff8e7',
                 textShadow: '0 0 16px rgba(255, 215, 120, 0.4)',
               }}
             >
