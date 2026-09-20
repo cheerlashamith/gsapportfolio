@@ -3,19 +3,18 @@ import gsap from 'gsap';
 
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const curtainRef = useRef<HTMLDivElement>(null);
-  const terminalRef = useRef<HTMLDivElement>(null);
-  const line1Ref = useRef<HTMLDivElement>(null);
-  const line2Ref = useRef<HTMLDivElement>(null);
-  const line3Ref = useRef<HTMLDivElement>(null);
-  const line4Ref = useRef<HTMLDivElement>(null);
-  const line5Ref = useRef<HTMLDivElement>(null);
-  const cursorRef = useRef<HTMLSpanElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const emblemRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
+  const yearTagRef = useRef<HTMLDivElement>(null);
+  const lineAccentRef = useRef<HTMLDivElement>(null);
 
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
 
   useEffect(() => {
+    // Lock scroll during preloader
     document.body.style.overflow = 'hidden';
 
     let isFinished = false;
@@ -35,6 +34,8 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
     }, 4200);
 
     const ctx = gsap.context(() => {
+      const strips = gsap.utils.toArray<HTMLElement>('.shutter-strip');
+
       const tl = gsap.timeline({
         onComplete: () => {
           clearTimeout(fallbackTimer);
@@ -43,116 +44,90 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       });
 
       // Initial States
-      gsap.set(terminalRef.current, { scale: 0.9, opacity: 0, y: 30 });
-      gsap.set([line1Ref.current, line2Ref.current, line3Ref.current, line4Ref.current, line5Ref.current], {
-        opacity: 0,
-        x: -10,
-      });
+      gsap.set(strips, { yPercent: 0 });
+      gsap.set(emblemRef.current, { scale: 0.7, opacity: 0, y: -20 });
+      gsap.set(titleRef.current, { opacity: 0, y: 35, letterSpacing: '0.02em' });
+      gsap.set(lineAccentRef.current, { scaleX: 0 });
+      gsap.set(subtitleRef.current, { opacity: 0, y: 15 });
+      gsap.set(yearTagRef.current, { opacity: 0, scale: 0.9 });
 
-      // Cursor blinking
-      gsap.to(cursorRef.current, {
-        opacity: 0,
-        repeat: -1,
-        yoyo: true,
-        duration: 0.45,
-        ease: 'power1.inOut',
-      });
-
-      // 1. Terminal Window Floats in
-      tl.to(terminalRef.current, {
+      // 1. Emblem drops in with spring physics
+      tl.to(emblemRef.current, {
         scale: 1,
         opacity: 1,
         y: 0,
-        duration: 0.35,
-        ease: 'power3.out',
+        duration: 0.55,
+        ease: 'back.out(1.5)',
       });
 
-      // 2. Line 1: Command initialization
+      // 2. Bold Name CHEERLA SHAMITH rises and tracks out
       tl.to(
-        line1Ref.current,
+        titleRef.current,
         {
           opacity: 1,
-          x: 0,
-          duration: 0.2,
+          y: 0,
+          letterSpacing: '0.14em',
+          duration: 0.65,
+          ease: 'power3.out',
+        },
+        '-=0.3'
+      );
+
+      // 3. Central glowing accent line extends outward
+      tl.to(
+        lineAccentRef.current,
+        {
+          scaleX: 1,
+          duration: 0.55,
+          ease: 'power2.inOut',
+        },
+        '-=0.35'
+      );
+
+      // 4. Subtitle & Year tag reveal
+      tl.to(
+        subtitleRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.45,
           ease: 'power2.out',
         },
-        '+=0.08'
-      );
-
-      // 3. Line 2: Module loading [LOADED]
-      tl.to(
-        line2Ref.current,
+        '-=0.3'
+      )
+      .to(
+        yearTagRef.current,
         {
           opacity: 1,
-          x: 0,
-          duration: 0.2,
-          ease: 'power2.out',
+          scale: 1,
+          duration: 0.4,
+          ease: 'back.out(1.3)',
         },
-        '+=0.12'
+        '-=0.25'
       );
 
-      // 4. Line 3: Compiling AI & Projects [100%]
-      tl.to(
-        line3Ref.current,
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.2,
-          ease: 'power2.out',
-        },
-        '+=0.12'
-      );
+      // 5. Brief hold for visual impact
+      tl.to({}, { duration: 0.45 });
 
-      // 5. Line 4: Welcome Highlight (CHEERLA SHAMITH)
-      tl.to(
-        line4Ref.current,
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.25,
-          ease: 'back.out(1.2)',
-        },
-        '+=0.1'
-      );
-
-      // 6. Line 5: Launch trigger
-      tl.to(
-        line5Ref.current,
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.2,
-          ease: 'power2.out',
-        },
-        '+=0.08'
-      );
-
-      // 7. Power surge glow on terminal window
-      tl.to(terminalRef.current, {
-        boxShadow: '0 0 50px rgba(82,39,199,0.7), 0 0 90px rgba(255,109,52,0.6)',
-        borderColor: 'rgba(255, 109, 52, 0.6)',
-        duration: 0.3,
-        ease: 'power2.out',
-      });
-
-      // 8. Hold for a moment to appreciate
-      tl.to({}, { duration: 0.5 });
-
-      // 9. Zoom-burst transition
-      tl.to(terminalRef.current, {
-        scale: 1.08,
+      // 6. Central typography dissolves slightly forward
+      tl.to(contentRef.current, {
         opacity: 0,
-        filter: 'blur(8px)',
+        scale: 1.06,
+        y: -25,
         duration: 0.35,
         ease: 'power3.in',
       });
 
-      // 10. Curtain lift revealing the portfolio
+      // 7. Staggered Multi-Column Shutter Wave (Striking Vertical Slice Reveal)
       tl.to(
-        curtainRef.current,
+        strips,
         {
           yPercent: -100,
           duration: 0.75,
+          stagger: {
+            each: 0.08,
+            from: 'start', // wave from left to right
+          },
           ease: 'power4.inOut',
         },
         '-=0.1'
@@ -178,177 +153,199 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         pointerEvents: 'auto',
       }}
     >
+      {/* 5 VERTICAL PURE BLACK SHUTTER STRIPS (Wave Reveal) */}
       <div
-        ref={curtainRef}
         style={{
           position: 'absolute',
           inset: 0,
-          background: '#06060c',
-          zIndex: 1,
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '20px',
-          willChange: 'transform',
+          zIndex: 1,
+          pointerEvents: 'none',
         }}
       >
-        {/* Ambient Backlight Glows */}
+        {[0, 1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className="shutter-strip"
+            style={{
+              flex: 1,
+              height: '100%',
+              background: '#000000', // PURE BLACK
+              position: 'relative',
+              willChange: 'transform',
+              borderRight: i < 4 ? '1px solid rgba(255, 255, 255, 0.03)' : 'none',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* CENTRAL TYPOGRAPHIC CONTENT */}
+      <div
+        ref={contentRef}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '24px',
+          textAlign: 'center',
+          userSelect: 'none',
+          willChange: 'transform, opacity',
+        }}
+      >
+        {/* Soft Ambient Spotlight (Royal Purple & Solar Orange, strictly no red/maroon) */}
         <div
           style={{
             position: 'absolute',
-            width: '550px',
-            height: '450px',
+            width: '600px',
+            height: '400px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(82, 39, 199, 0.25) 0%, rgba(255, 109, 52, 0.12) 40%, transparent 70%)',
-            filter: 'blur(80px)',
+            background: 'radial-gradient(circle, rgba(82, 39, 199, 0.28) 0%, rgba(255, 109, 52, 0.12) 40%, transparent 70%)',
+            filter: 'blur(90px)',
             pointerEvents: 'none',
+            zIndex: -1,
           }}
         />
 
-        {/* TERMINAL WINDOW CARD */}
+        {/* 1. Monogram Crest */}
         <div
-          ref={terminalRef}
+          ref={emblemRef}
           style={{
             position: 'relative',
-            width: 'clamp(320px, 92vw, 680px)',
-            borderRadius: '18px',
-            background: 'linear-gradient(160deg, rgba(20, 20, 32, 0.95), rgba(10, 10, 18, 0.98))',
-            border: '1px solid rgba(255, 255, 255, 0.14)',
-            boxShadow: '0 25px 70px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.1)',
-            backdropFilter: 'blur(25px)',
-            overflow: 'hidden',
-            willChange: 'transform, opacity, box-shadow',
-            userSelect: 'none',
+            width: '80px',
+            height: '80px',
+            marginBottom: '26px',
+            willChange: 'transform, opacity',
           }}
         >
-          {/* Terminal Title Bar */}
+          {/* Subtle Outer Conic Aura */}
           <div
             style={{
+              position: 'absolute',
+              inset: '-4px',
+              borderRadius: '26px',
+              background: 'linear-gradient(135deg, #5227c7, #ff6d34)',
+              opacity: 0.7,
+              filter: 'blur(10px)',
+            }}
+          />
+
+          {/* Pure Black Inner Card with Crisp Border */}
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              borderRadius: '22px',
+              background: '#0a0a12',
+              border: '1.5px solid rgba(255, 255, 255, 0.2)',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '14px 18px',
-              background: 'rgba(255, 255, 255, 0.03)',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+              justifyContent: 'center',
+              boxShadow: '0 12px 30px rgba(0,0,0,0.8)',
             }}
           >
-            {/* macOS Frosted Dots */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ff5f56', display: 'inline-block', boxShadow: '0 0 6px rgba(255,95,86,0.6)' }} />
-              <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ffbd2e', display: 'inline-block', boxShadow: '0 0 6px rgba(255,189,46,0.6)' }} />
-              <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#27c93f', display: 'inline-block', boxShadow: '0 0 6px rgba(39,201,63,0.6)' }} />
-            </div>
-
-            {/* Title / Host prompt */}
-            <div
-              style={{
-                fontFamily: "'Space Grotesk', monospace",
-                fontSize: '12px',
-                color: 'rgba(255, 255, 255, 0.6)',
-                fontWeight: 600,
-                letterSpacing: '0.04em',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-              }}
-            >
-              <span style={{ color: '#5227c7' }}>●</span> shamith@portfolio-os:~
-            </div>
-
-            {/* Version Badge */}
             <span
               style={{
-                fontFamily: "'Space Grotesk', monospace",
-                fontSize: '11px',
-                color: '#ff6d34',
-                fontWeight: 700,
-                background: 'rgba(255, 109, 52, 0.12)',
-                padding: '2px 8px',
-                borderRadius: '6px',
-                border: '1px solid rgba(255, 109, 52, 0.25)',
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontWeight: 900,
+                fontSize: '26px',
+                color: '#ffffff',
+                letterSpacing: '1px',
               }}
             >
-              v2.0
+              CS
             </span>
           </div>
+        </div>
 
-          {/* Terminal Console Content */}
-          <div
+        {/* 2. Bold Name Title (Pure White with Subtle Lighting) */}
+        <h1
+          ref={titleRef}
+          style={{
+            fontFamily: "'Libre Baskerville', serif",
+            fontSize: 'clamp(2.1rem, 6vw, 4.4rem)',
+            fontWeight: 900,
+            lineHeight: 1.15,
+            color: '#ffffff', // PURE WHITE
+            textTransform: 'uppercase',
+            marginBottom: '16px',
+            willChange: 'transform, opacity, letter-spacing',
+            textShadow: '0 4px 30px rgba(0,0,0,0.9), 0 0 50px rgba(82, 39, 199, 0.4)',
+          }}
+        >
+          CHEERLA SHAMITH
+        </h1>
+
+        {/* 3. Glowing Center Accent Line */}
+        <div
+          ref={lineAccentRef}
+          style={{
+            width: 'clamp(180px, 35vw, 360px)',
+            height: '2px',
+            background: 'linear-gradient(90deg, transparent, #5227c7, #ff6d34, transparent)',
+            boxShadow: '0 0 12px rgba(255, 109, 52, 0.8)',
+            borderRadius: '999px',
+            marginBottom: '20px',
+            transformOrigin: 'center',
+            willChange: 'transform',
+          }}
+        />
+
+        {/* 4. Subtitle: Clean & Architectural */}
+        <div
+          ref={subtitleRef}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+            marginBottom: '24px',
+            willChange: 'transform, opacity',
+          }}
+        >
+          <span
             style={{
-              padding: '24px 22px',
-              fontFamily: "'Space Grotesk', monospace",
-              fontSize: 'clamp(12px, 1.4vw, 14.5px)',
-              lineHeight: 1.8,
-              color: '#e2e8f0',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: 'clamp(11.5px, 1.3vw, 14px)',
+              fontWeight: 600,
+              letterSpacing: '0.28em',
+              textTransform: 'uppercase',
+              color: 'rgba(255, 255, 255, 0.75)',
             }}
           >
-            {/* Line 1: Init */}
-            <div ref={line1Ref} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ color: '#ff6d34', fontWeight: 800 }}>❯</span>
-              <span style={{ color: '#5227c7', fontWeight: 700 }}>shamith.init</span>
-              <span style={{ color: 'rgba(255,255,255,0.7)' }}>--runtime=multi-agent-ai</span>
-            </div>
+            Full-Stack Developer <span style={{ color: '#ff6d34', margin: '0 4px' }}>•</span> AI Systems Engineer
+          </span>
+        </div>
 
-            {/* Line 2: Modules Loaded */}
-            <div ref={line2Ref} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px' }}>
-              <span style={{ color: 'rgba(255,255,255,0.65)' }}>
-                ⚙ Loading Cores: <span style={{ color: '#fff', fontWeight: 600 }}>Multi-Agent Systems, Generative AI, Full-Stack</span>
-              </span>
-              <span style={{ color: '#27c93f', fontWeight: 700, background: 'rgba(39,201,63,0.12)', padding: '1px 8px', borderRadius: '4px', border: '1px solid rgba(39,201,63,0.3)' }}>
-                ✔ LOADED
-              </span>
-            </div>
-
-            {/* Line 3: Project Compilation */}
-            <div ref={line3Ref} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px' }}>
-              <span style={{ color: 'rgba(255,255,255,0.65)' }}>
-                ⚡ Deploying Artifacts: <span style={{ color: '#ff9e75' }}>MAESTRO, Gramin Sahayak, SmartSupport</span>
-              </span>
-              <span style={{ color: '#ff6d34', fontWeight: 700, background: 'rgba(255,109,52,0.12)', padding: '1px 8px', borderRadius: '4px', border: '1px solid rgba(255,109,52,0.3)' }}>
-                ✔ 100%
-              </span>
-            </div>
-
-            {/* Line 4: Welcome Highlight */}
-            <div
-              ref={line4Ref}
-              style={{
-                marginTop: '4px',
-                padding: '12px 14px',
-                borderRadius: '10px',
-                background: 'linear-gradient(90deg, rgba(82, 39, 199, 0.25), rgba(255, 109, 52, 0.15))',
-                borderLeft: '4px solid #ff6d34',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '2px',
-              }}
-            >
-              <span style={{ color: '#ff6d34', fontSize: '11.5px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-                ACCESS GRANTED
-              </span>
-              <span style={{ fontFamily: "'Libre Baskerville', serif", fontWeight: 800, fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.04em' }}>
-                Cheerla Shamith • AI & Full-Stack Engineer
-              </span>
-            </div>
-
-            {/* Line 5: Launching with Blinking Cursor */}
-            <div ref={line5Ref} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#38ef7d', fontWeight: 600 }}>
-              <span>🚀 Launching interface</span>
-              <span
-                ref={cursorRef}
-                style={{
-                  display: 'inline-block',
-                  width: '8px',
-                  height: '16px',
-                  background: '#ff6d34',
-                  borderRadius: '1px',
-                }}
-              />
-            </div>
-          </div>
+        {/* 5. Minimalist Glass Year Badge */}
+        <div
+          ref={yearTagRef}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: '5px 16px',
+            borderRadius: '999px',
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            willChange: 'transform, opacity',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '11px',
+              fontWeight: 700,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: '#ff6d34',
+            }}
+          >
+            PORTFOLIO // 2026
+          </span>
         </div>
       </div>
     </div>
