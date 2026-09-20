@@ -98,12 +98,13 @@ export default function TimelineSection() {
                         <span style={{
                           display: 'inline-block',
                           fontFamily: 'Space Grotesk, sans-serif', fontSize: 12, textTransform: 'uppercase',
-                          color: '#ffffff', background: '#5227c7',
-                          padding: '5px 14px', borderRadius: 20, fontWeight: 700, letterSpacing: '0.05em'
+                          color: '#ffffff', background: '#ff6d34',
+                          padding: '5px 14px', borderRadius: 20, fontWeight: 700, letterSpacing: '0.05em',
+                          boxShadow: '0 2px 10px rgba(255,109,52,0.3)'
                         }}>
                           {item.type}
                         </span>
-                        <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 13, color: '#ff6d34', fontWeight: 600 }}>
+                        <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 13, color: '#5227c7', fontWeight: 700 }}>
                           {item.date}
                         </span>
                       </div>
