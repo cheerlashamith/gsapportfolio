@@ -6,7 +6,7 @@ import aboutImg from '../assets/about.webp';
 const STATS = [
   { value: 9, suffix: '.32', label: 'CGPA', icon: 'fas fa-graduation-cap' },
   { value: 5, suffix: '+',   label: 'Projects',   icon: 'fas fa-code'        },
-  { value: 3, suffix: '+',   label: 'Internships', icon: 'fas fa-briefcase'   },
+  { value: 4, suffix: '+',   label: 'Internships', icon: 'fas fa-briefcase'   },
   { value: 7, suffix: '+',   label: 'Certifications', icon: 'fas fa-certificate' },
 ];
 

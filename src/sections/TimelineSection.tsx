@@ -1,7 +1,7 @@
-// src/sections/TimelineSection.tsx
 import { useRef } from 'react';
 import { timeline } from '../data/timeline';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { IoOpenOutline } from 'react-icons/io5';
 
 export default function TimelineSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -118,17 +118,40 @@ export default function TimelineSection() {
                       <p className="group-hover:text-[#1a1a2e] group-hover:font-medium transition-colors duration-300 [&>strong]:text-[#5227c7] [&>strong]:font-semibold" style={{ fontFamily: 'Poppins, sans-serif', fontSize: 14.5, color: '#555', lineHeight: 1.7 }} dangerouslySetInnerHTML={{ __html: item.description }} />
 
                       {item.link && (
-                        <a href={item.link} target="_blank" rel="noopener noreferrer" style={{
-                          display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginTop: 20,
-                          fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, fontSize: 13,
-                          color: '#fff', background: '#ff6d34', padding: '8px 16px', borderRadius: '6px',
-                          textDecoration: 'none', transition: 'background 0.3s, transform 0.2s',
-                          boxShadow: '0 4px 14px rgba(255,109,52,0.3)'
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.background = '#e65c20'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = '#ff6d34'; e.currentTarget.style.transform = ''; }}
+                        <a 
+                          href={item.link} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          style={{
+                            display: 'inline-flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            gap: '7px',
+                            marginTop: 20,
+                            fontFamily: 'Space Grotesk, sans-serif', 
+                            fontWeight: 600, 
+                            fontSize: 13,
+                            color: '#fff', 
+                            background: '#5227c7', 
+                            padding: '9px 18px', 
+                            borderRadius: '8px',
+                            textDecoration: 'none', 
+                            transition: 'all 0.3s ease',
+                            boxShadow: '0 4px 14px rgba(82,39,199,0.25)'
+                          }}
+                          onMouseEnter={e => { 
+                            e.currentTarget.style.background = '#ff6d34'; 
+                            e.currentTarget.style.transform = 'translateY(-2px)'; 
+                            e.currentTarget.style.boxShadow = '0 6px 18px rgba(255,109,52,0.35)';
+                          }}
+                          onMouseLeave={e => { 
+                            e.currentTarget.style.background = '#5227c7'; 
+                            e.currentTarget.style.transform = ''; 
+                            e.currentTarget.style.boxShadow = '0 4px 14px rgba(82,39,199,0.25)';
+                          }}
                         >
-                          Verify Credential
+                          View Certificate
+                          <IoOpenOutline style={{ fontSize: 16 }} />
                         </a>
                       )}
                     </div>
