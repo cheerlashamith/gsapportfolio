@@ -33,7 +33,8 @@ export const hackathons = [
     organizer: 'AMD',
     description: 'Built a cost-effective Smart Facility Digital Twin with real-time occupancy visualization and peak-hour forecasting using a lightweight IoT-free architecture.',
     logo: amdLogo,
-    glowColor: '#ED1C24', badge: null, certificate: null,
+    glowColor: '#ED1C24', badge: null,
+    certificate: 'https://certificate.hack2skill.com/claim/183b807be2559ccb6a9fad9d7fe02a3d9ca8faf20ddd62927f887a1af654f1d5',
     projectUrl: 'https://github.com/cheerlashamith/SmartSpace-AI-Space-Utilization-System',
   },
   {
